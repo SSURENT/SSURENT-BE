@@ -23,10 +23,6 @@ public class UserPanaltyLog extends BaseEntity {
     private Users userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "panalty_id")
-    private Panalty panaltyId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "items_id")
     private Items itemsId;
 
