@@ -28,6 +28,9 @@ public class Users extends BaseEntity{
     @Column(name = "ph_num")
     private String phoneNum;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
