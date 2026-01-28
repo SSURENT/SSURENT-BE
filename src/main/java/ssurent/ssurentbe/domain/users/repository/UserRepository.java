@@ -7,7 +7,7 @@ import ssurent.ssurentbe.domain.users.entity.Users;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, String> {
+public interface UserRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByStudentNum(String studentNum);
     boolean existsByStudentNum(String studentNum);
 }

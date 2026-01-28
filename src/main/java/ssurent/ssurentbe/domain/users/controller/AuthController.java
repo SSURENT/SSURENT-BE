@@ -1,42 +1,48 @@
 package ssurent.ssurentbe.domain.users.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssurent.ssurentbe.common.base.BaseResponse;
+import ssurent.ssurentbe.common.status.SuccessStatus;
+import ssurent.ssurentbe.domain.users.controller.docs.AuthApiDocs;
 import ssurent.ssurentbe.domain.users.dto.LoginRequest;
 import ssurent.ssurentbe.domain.users.dto.SignupRequest;
 import ssurent.ssurentbe.domain.users.dto.TokenResponse;
 import ssurent.ssurentbe.domain.users.service.AuthService;
 
-@Tag(name = "Auth", description = "인증 API")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApiDocs {
 
     private final AuthService authService;
 
-    @Operation(summary = "회원가입", description = "학번, 이름, 전화번호, 비밀번호로 회원가입합니다.")
+    @Override
     @PostMapping("/signup")
-    public ResponseEntity<TokenResponse> signup(@RequestBody SignupRequest request) {
-        TokenResponse response = authService.signup(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<BaseResponse<TokenResponse>> signup(@RequestBody SignupRequest request) {
+        TokenResponse data = authService.signup(request);
+        SuccessStatus status = SuccessStatus.SIGNUP_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, data));
     }
 
-    @Operation(summary = "로그인", description = "학번과 비밀번호로 로그인합니다.")
+    @Override
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request) {
-        TokenResponse response = authService.login(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<BaseResponse<TokenResponse>> login(@RequestBody LoginRequest request) {
+        TokenResponse data = authService.login(request);
+        SuccessStatus status = SuccessStatus.LOGIN_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, data));
     }
 
-    @Operation(summary = "토큰 갱신", description = "리프레시 토큰으로 새로운 액세스 토큰을 발급받습니다.")
+    @Override
     @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refresh(@RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<BaseResponse<TokenResponse>> refresh(@RequestHeader("Authorization") String authorization) {
         String refreshToken = authorization.replace("Bearer ", "");
-        TokenResponse response = authService.refresh(refreshToken);
-        return ResponseEntity.ok(response);
+        TokenResponse data = authService.refresh(refreshToken);
+        SuccessStatus status = SuccessStatus.REISSUE_TOKEN_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, data));
     }
 }

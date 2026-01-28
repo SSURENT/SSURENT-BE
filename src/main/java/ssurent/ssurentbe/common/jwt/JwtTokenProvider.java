@@ -3,6 +3,7 @@ package ssurent.ssurentbe.common.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import ssurent.ssurentbe.common.exception.GeneralException;
+import ssurent.ssurentbe.common.status.ErrorStatus;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -76,8 +79,16 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (SignatureException e) {
+            throw new GeneralException(ErrorStatus.JWT_INVALID_SIGNATURE);
+        } catch (MalformedJwtException e) {
+            throw new GeneralException(ErrorStatus.JWT_MALFORMED);
+        } catch (ExpiredJwtException e) {
+            throw new GeneralException(ErrorStatus.JWT_EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            throw new GeneralException(ErrorStatus.JWT_UNSUPPORTED);
+        } catch (IllegalArgumentException e) {
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
         }
     }
 
