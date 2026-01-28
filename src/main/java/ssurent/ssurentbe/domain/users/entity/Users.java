@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Users extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "student_Num", unique = true)
     private String studentNum;
@@ -27,6 +27,9 @@ public class Users extends BaseEntity{
 
     @Column(name = "ph_num")
     private String phoneNum;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
