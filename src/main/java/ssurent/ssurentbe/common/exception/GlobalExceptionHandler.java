@@ -19,7 +19,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(GeneralException.class)
     public ResponseEntity<BaseResponse<Void>> handleGeneralException(GeneralException e) {
-        ErrorStatus status = (ErrorStatus) e.getStatus();
+        ErrorStatus status = e.getStatus();
         if (status.getHttpStatus().is5xxServerError()) {
             log.error("[*] GeneralException :", e);
         } else {
