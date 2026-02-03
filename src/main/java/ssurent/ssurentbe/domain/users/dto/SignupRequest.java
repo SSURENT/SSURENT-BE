@@ -6,4 +6,11 @@ public record SignupRequest(
         String phoneNum,
         String password
 ) {
+    @Override
+    public String toString(){
+        return "SignupRequest[studentNum=" + studentNum
+                + ", name=" + name
+                + ", phoneNum=" + phoneNum
+                + ", password=***]";
+    }
 }
