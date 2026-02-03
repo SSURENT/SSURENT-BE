@@ -26,4 +26,8 @@ public class BaseResponse<T> {
     public static <T> BaseResponse<T> error(ErrorStatus status) {
         return new BaseResponse<>(status.getCode(), status.getMessage(), null);
     }
+
+    public static <T> BaseResponse<T> error(ErrorStatus status, String message) {
+        return new BaseResponse<>(status.getCode(), message, null);
+    }
 }
