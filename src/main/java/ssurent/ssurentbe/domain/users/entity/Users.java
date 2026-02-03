@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Users extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "student_Num", unique = true)
     private String studentNum;
@@ -28,12 +28,15 @@ public class Users extends BaseEntity{
     @Column(name = "ph_num")
     private String phoneNum;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "role")
     private Role role;
@@ -43,7 +46,7 @@ public class Users extends BaseEntity{
 
     //회원 삭제처리
     public void withdraw(){
-        this.isDeleted = true;
+        this.deleted = true;
         this.deletedAt = LocalDateTime.now();
         this.name = null;
         this.phoneNum = null;

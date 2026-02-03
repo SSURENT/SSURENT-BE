@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Items extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -33,7 +33,7 @@ public class Items extends BaseEntity {
     private Status status;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

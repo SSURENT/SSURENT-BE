@@ -1,0 +1,115 @@
+package ssurent.ssurentbe.common.jwt;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
+import ssurent.ssurentbe.common.exception.GeneralException;
+import ssurent.ssurentbe.common.status.ErrorStatus;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+
+@Slf4j
+@Component
+public class JwtTokenProvider {
+
+    private final SecretKey secretKey;
+    private final long accessTokenValidity;
+    private final long refreshTokenValidity;
+    private final UserDetailsService userDetailsService;
+
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.access-token-validity}") long accessTokenValidity,
+            @Value("${jwt.refresh-token-validity}") long refreshTokenValidity,
+            @Lazy UserDetailsService userDetailsService) {
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        this.accessTokenValidity = accessTokenValidity;
+        this.refreshTokenValidity = refreshTokenValidity;
+        this.userDetailsService = userDetailsService;
+    }
+
+    public String createAccessToken(String studentNum) {
+        return createToken(studentNum, accessTokenValidity, "access");
+    }
+
+    public String createRefreshToken(String studentNum) {
+        return createToken(studentNum, refreshTokenValidity, "refresh");
+    }
+
+    private String createToken(String studentNum, long validity, String tokenType) {
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + validity);
+
+        return Jwts.builder()
+                .subject(studentNum)
+                .claim("type", tokenType)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public Authentication getAuthentication(String token) {
+        String studentNum = getStudentNum(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(studentNum);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public String getStudentNum(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT 토큰 만료: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_EXPIRED);
+        } catch (SignatureException e) {
+            log.warn("JWT 서명 검증 실패: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
+        } catch (MalformedJwtException e) {
+            log.warn("JWT 형식 오류: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
+        } catch (UnsupportedJwtException e) {
+            log.warn("지원하지 않는 JWT: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
+        } catch (IllegalArgumentException e) {
+            log.warn("JWT 처리 오류: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
+        }
+    }
+
+    public boolean isRefreshToken(String token) {
+        try {
+            String type = Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("type", String.class);
+            return "refresh".equals(type);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+}

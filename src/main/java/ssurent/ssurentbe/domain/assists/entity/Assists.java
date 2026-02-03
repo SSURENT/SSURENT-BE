@@ -15,20 +15,20 @@ import java.time.LocalDateTime;
 public class Assists extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     //도우미 삭제
     public void withdraw(){
-        this.isDeleted = true;
+        this.deleted = true;
         this.deletedAt = LocalDateTime.now();
         this.name = null;
     }

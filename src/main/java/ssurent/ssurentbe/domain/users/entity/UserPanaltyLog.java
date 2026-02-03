@@ -16,7 +16,7 @@ import ssurent.ssurentbe.domain.users.enums.PanaltyTypes;
 public class UserPanaltyLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,6 +30,7 @@ public class UserPanaltyLog extends BaseEntity {
     @JoinColumn(name = "history_id")
     private RentalHistory rentalHistoryId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "panalty_type")
     private PanaltyTypes panaltyType;
 
