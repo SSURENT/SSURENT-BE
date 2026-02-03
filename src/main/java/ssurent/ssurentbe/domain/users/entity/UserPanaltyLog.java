@@ -30,6 +30,7 @@ public class UserPanaltyLog extends BaseEntity {
     @JoinColumn(name = "history_id")
     private RentalHistory rentalHistoryId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "panalty_type")
     private PanaltyTypes panaltyType;
 
