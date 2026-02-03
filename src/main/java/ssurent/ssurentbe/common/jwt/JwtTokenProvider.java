@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import ssurent.ssurentbe.common.status.ErrorStatus;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -79,15 +81,20 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(token);
             return true;
-        } catch (SignatureException e) {
-            throw new GeneralException(ErrorStatus.JWT_INVALID_SIGNATURE);
-        } catch (MalformedJwtException e) {
-            throw new GeneralException(ErrorStatus.JWT_MALFORMED);
         } catch (ExpiredJwtException e) {
+            log.warn("JWT 토큰 만료: {}", e.getMessage());
             throw new GeneralException(ErrorStatus.JWT_EXPIRED);
+        } catch (SignatureException e) {
+            log.warn("JWT 서명 검증 실패: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
+        } catch (MalformedJwtException e) {
+            log.warn("JWT 형식 오류: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
         } catch (UnsupportedJwtException e) {
-            throw new GeneralException(ErrorStatus.JWT_UNSUPPORTED);
+            log.warn("지원하지 않는 JWT: {}", e.getMessage());
+            throw new GeneralException(ErrorStatus.JWT_INVALID);
         } catch (IllegalArgumentException e) {
+            log.warn("JWT 처리 오류: {}", e.getMessage());
             throw new GeneralException(ErrorStatus.JWT_INVALID);
         }
     }
