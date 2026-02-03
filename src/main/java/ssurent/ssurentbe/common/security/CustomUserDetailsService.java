@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ssurent.ssurentbe.common.status.ErrorStatus;
 import ssurent.ssurentbe.domain.users.entity.Users;
+import ssurent.ssurentbe.domain.users.enums.Status;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.util.Collections;
@@ -24,6 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         Users user = userRepository.findByStudentNum(studentNum)
                 .orElseThrow(() -> new UsernameNotFoundException(ErrorStatus.USER_NOT_FOUND.getMessage()));
 
+        if(user.isDeleted()){
+            throw new UsernameNotFoundException(ErrorStatus.USER_WITHDRAWN.getMessage());
+        }
         return new User(
                 user.getStudentNum(),
                 user.getPassword(),
