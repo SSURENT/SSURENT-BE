@@ -67,10 +67,7 @@ public class AuthService {
     }
 
     public TokenResponse refresh(String refreshToken) {
-        if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new GeneralException(ErrorStatus.JWT_INVALID);
-        }
-
+        jwtTokenProvider.validateToken(refreshToken);
         if (!jwtTokenProvider.isRefreshToken(refreshToken)) {
             throw new GeneralException(ErrorStatus.JWT_INVALID_TYPE);
         }
