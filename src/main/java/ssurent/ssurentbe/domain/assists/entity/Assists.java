@@ -21,14 +21,14 @@ public class Assists extends BaseEntity {
     private String name;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     //도우미 삭제
     public void withdraw(){
-        this.isDeleted = true;
+        this.deleted = true;
         this.deletedAt = LocalDateTime.now();
         this.name = null;
     }

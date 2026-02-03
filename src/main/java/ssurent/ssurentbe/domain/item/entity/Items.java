@@ -33,7 +33,7 @@ public class Items extends BaseEntity {
     private Status status;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;

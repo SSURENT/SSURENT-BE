@@ -36,7 +36,7 @@ public class Users extends BaseEntity{
     private Status status;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(name = "role")
     private Role role;
@@ -46,7 +46,7 @@ public class Users extends BaseEntity{
 
     //회원 삭제처리
     public void withdraw(){
-        this.isDeleted = true;
+        this.deleted = true;
         this.deletedAt = LocalDateTime.now();
         this.name = null;
         this.phoneNum = null;
