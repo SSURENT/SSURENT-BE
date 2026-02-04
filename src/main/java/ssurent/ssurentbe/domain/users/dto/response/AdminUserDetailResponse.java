@@ -1,5 +1,6 @@
 package ssurent.ssurentbe.domain.users.dto.response;
 
+import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
 import ssurent.ssurentbe.domain.users.entity.Users;
 
 import java.util.ArrayList;
@@ -14,10 +15,7 @@ public record AdminUserDetailResponse(
         String phoneNum,
         List<UserPenaltyResponse> penalties
 ) {
-    public static AdminUserDetailResponse from(Users user) {
-        // TODO : 이후 Users 가 Penalty를 관리하게 해서 추가시켜주도록
-        List<UserPenaltyResponse> penaltyList = new ArrayList<>();
-
+    public static AdminUserDetailResponse from(Users user, List<UserPenaltyLog> penalties) {
         return new AdminUserDetailResponse(
                 user.getId(),
                 user.getName(),
@@ -25,7 +23,9 @@ public record AdminUserDetailResponse(
                 user.getRole().name(),
                 user.getStatus().name(),
                 user.getPhoneNum(),
-                penaltyList
+                penalties.stream()
+                        .map(UserPenaltyResponse::from)
+                        .toList()
         );
     }
 }
