@@ -23,5 +23,14 @@ public class UserController {
         return userService.getMyInfo(userDetails.getUsername());
     }
 
-
+    @PatchMapping("/phone-number")
+    public void updatePhoneNumber(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody UpdatePhoneNumberRequest request
+    ) {
+        userService.updatePhoneNumber(
+                userDetails.getUsername(),
+                request.phoneNum()
+        );
+    }
 }

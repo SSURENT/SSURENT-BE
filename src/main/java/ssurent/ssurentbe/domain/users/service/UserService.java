@@ -26,5 +26,13 @@ public class UserService {
         return UserInfoResponse.from(user);
     }
 
+    @Transactional
+    public void updatePhoneNumber(String username, String phoneNum) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(username)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        user.updatePhoneNumber(phoneNum);
+    }
+
 
 }
