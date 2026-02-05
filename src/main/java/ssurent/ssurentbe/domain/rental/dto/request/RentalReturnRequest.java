@@ -1,8 +1,8 @@
 package ssurent.ssurentbe.domain.rental.dto.request;
 
 public record RentalReturnRequest(
-        String itemId,
-        String rentalId,
+        Long itemId,
+        Long rentalId,
         String assistName
 ) {
 }

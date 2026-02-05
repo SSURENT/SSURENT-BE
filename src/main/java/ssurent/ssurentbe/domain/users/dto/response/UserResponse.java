@@ -5,7 +5,7 @@ import ssurent.ssurentbe.domain.users.enums.Role;
 import ssurent.ssurentbe.domain.users.enums.Status;
 
 public record UserResponse(
-        String userId,
+        Long userId,
         String studentNum,
         String name,
         Role role,

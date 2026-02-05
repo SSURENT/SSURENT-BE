@@ -1,7 +1,9 @@
 package ssurent.ssurentbe.domain.users.dto.request;
 
+import ssurent.ssurentbe.domain.users.enums.Role;
+
 public record AdminUserRoleUpdateRequest(
-        String userId,
-        String role
+        Long userId,
+        Role role
 ) {
 }

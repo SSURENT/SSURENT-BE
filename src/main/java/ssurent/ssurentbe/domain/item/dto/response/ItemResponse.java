@@ -5,7 +5,7 @@ import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 
 public record ItemResponse(
-        String itemId,
+        Long itemId,
         String itemName,
         String itemDescription,
         Status status,

@@ -6,8 +6,8 @@ import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 import java.time.LocalDateTime;
 
 public record RentalItemResponse(
-        String rentalId,
-        String itemId,
+        Long rentalId,
+        Long itemId,
         String itemName,
         LocalDateTime dueDate
 ) {

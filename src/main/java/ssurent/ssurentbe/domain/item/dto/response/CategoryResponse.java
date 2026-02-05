@@ -3,7 +3,7 @@ package ssurent.ssurentbe.domain.item.dto.response;
 import ssurent.ssurentbe.domain.item.entity.Category;
 
 public record CategoryResponse(
-        String categoryId,
+        Long categoryId,
         String categoryName
 ) {
     public static CategoryResponse from(Category category) {

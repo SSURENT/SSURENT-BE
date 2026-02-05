@@ -2,16 +2,18 @@ package ssurent.ssurentbe.domain.users.dto.response;
 
 import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
 import ssurent.ssurentbe.domain.users.entity.Users;
+import ssurent.ssurentbe.domain.users.enums.Role;
+import ssurent.ssurentbe.domain.users.enums.Status;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record AdminUserDetailResponse(
-        String userId,
+        Long userId,
         String userName,
         String studentNum,
-        String role,
-        String status,
+        Role role,
+        Status status,
         String phoneNum,
         List<UserPenaltyResponse> penalties
 ) {
@@ -20,8 +22,8 @@ public record AdminUserDetailResponse(
                 user.getId(),
                 user.getName(),
                 user.getStudentNum(),
-                user.getRole().name(),
-                user.getStatus().name(),
+                user.getRole(),
+                user.getStatus(),
                 user.getPhoneNum(),
                 penalties.stream()
                         .map(UserPenaltyResponse::from)

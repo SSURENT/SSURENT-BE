@@ -6,7 +6,7 @@ import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
 import java.time.LocalDateTime;
 
 public record UserPenaltyResponse(
-        String userPenaltyId,
+        Long userPenaltyId,
         LocalDateTime createdAt,
         String itemName,
         String penaltyType
