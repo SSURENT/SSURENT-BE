@@ -23,6 +23,9 @@ public class Category extends BaseEntity {
     @Column(name = "is_deleted")
     private boolean isDelelted;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 }

@@ -5,7 +5,7 @@ import lombok.*;
 import ssurent.ssurentbe.common.base.BaseEntity;
 import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
-import ssurent.ssurentbe.domain.users.enums.PanaltyTypes;
+import ssurent.ssurentbe.domain.users.enums.PenaltyTypes;
 
 @Entity
 @Getter
@@ -13,7 +13,7 @@ import ssurent.ssurentbe.domain.users.enums.PanaltyTypes;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "user_panalty_log")
-public class UserPanaltyLog extends BaseEntity {
+public class UserPenaltyLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +32,6 @@ public class UserPanaltyLog extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "panalty_type")
-    private PanaltyTypes panaltyType;
+    private PenaltyTypes penaltyType;
 
 }

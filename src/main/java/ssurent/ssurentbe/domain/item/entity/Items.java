@@ -3,6 +3,7 @@ package ssurent.ssurentbe.domain.item.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import ssurent.ssurentbe.common.base.BaseEntity;
+import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,10 @@ public class Items extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "condition")
+    private Condition condition;
 
     @Column(name = "is_deleted")
     private boolean deleted;
