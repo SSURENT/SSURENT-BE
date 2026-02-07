@@ -34,5 +34,16 @@ public class UserService {
         user.updatePhoneNumber(phoneNum);
     }
 
+    public List<UserPenaltyResponse> getMyPenalties(String username) {
+        Users user = userRepository.findByStudentNum(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<UserPanaltyLog> logs = userPanaltyLogRepository.findByUserIdOrderByCreatedAtDesc(user);
+
+        return logs.stream()
+                .map(UserPenaltyResponse::from)
+                .collect(Collectors.toList());
+    }
+
 
 }

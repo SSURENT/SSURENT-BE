@@ -33,4 +33,11 @@ public class UserController {
                 request.phoneNum()
         );
     }
+    @GetMapping("/penalties")
+    public List<UserPenaltyResponse> getMyPenalties(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return userService.getMyPenalties(userDetails.getUsername());
+    }
+
 }
