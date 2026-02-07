@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByStudentNum(String studentNum);
     boolean existsByStudentNum(String studentNum);
+    Optional<Users> findByStudentNumAndDeletedFalse(String studentNum);
 }

@@ -52,4 +52,8 @@ public class Users extends BaseEntity{
         this.phoneNum = null;
         this.studentNum = null;
     }
+    public void updatePhoneNumber(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
 }
