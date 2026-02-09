@@ -1,4 +1,4 @@
-name: SSURENT CI
+name: CI
 
 on:
   push:
