@@ -44,4 +44,7 @@ public class RentalHistory extends BaseEntity {
 
     @Column(name = "status")
     private Status status;
+
+    @Column(name = "is_overdue")
+    private boolean overdue;
 }
