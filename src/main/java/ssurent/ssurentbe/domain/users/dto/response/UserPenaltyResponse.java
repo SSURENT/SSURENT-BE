@@ -1,25 +1,24 @@
 package ssurent.ssurentbe.domain.users.dto.response;
 
-import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
+import ssurent.ssurentbe.domain.users.enums.PenaltyTypes;
 
 import java.time.LocalDateTime;
 
 public record UserPenaltyResponse(
-        Long userPenaltyId,
-        LocalDateTime createdAt,
-        String itemName,
-        String penaltyType
+        Long penaltyId,
+        PenaltyTypes penaltyType,
+        Long itemId,
+        Long rentalHistoryId,
+        LocalDateTime createdAt
 ) {
-    public static UserPenaltyResponse from(UserPenaltyLog userPenaltyLog) {
-        Items item = userPenaltyLog.getItemsId();
-        String itemInfo = item.getName() + " (" + item.getItemNum() + ")";
-
+    public static UserPenaltyResponse from(UserPenaltyLog log) {
         return new UserPenaltyResponse(
-                userPenaltyLog.getId(),
-                userPenaltyLog.getCreatedAt(),
-                itemInfo,
-                userPenaltyLog.getPenaltyType().getDescription()
+                log.getId(),
+                log.getPenaltyType(),
+                log.getItemsId() != null ? log.getItemsId().getId() : null,
+                log.getRentalHistoryId() != null ? log.getRentalHistoryId().getId() : null,
+                log.getCreatedAt()
         );
     }
 }
