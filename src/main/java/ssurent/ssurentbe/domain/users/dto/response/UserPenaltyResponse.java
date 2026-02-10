@@ -1,21 +1,21 @@
 package ssurent.ssurentbe.domain.users.dto.response;
 
-import ssurent.ssurentbe.domain.users.entity.UserPanaltyLog;
-import ssurent.ssurentbe.domain.users.enums.PanaltyTypes;
+import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
+import ssurent.ssurentbe.domain.users.enums.PenaltyTypes;
 
 import java.time.LocalDateTime;
 
 public record UserPenaltyResponse(
         Long penaltyId,
-        PanaltyTypes penaltyType,
+        PenaltyTypes penaltyType,
         Long itemId,
         Long rentalHistoryId,
         LocalDateTime createdAt
 ) {
-    public static UserPenaltyResponse from(UserPanaltyLog log) {
+    public static UserPenaltyResponse from(UserPenaltyLog log) {
         return new UserPenaltyResponse(
                 log.getId(),
-                log.getPanaltyType(),
+                log.getPenaltyType(),
                 log.getItemsId() != null ? log.getItemsId().getId() : null,
                 log.getRentalHistoryId() != null ? log.getRentalHistoryId().getId() : null,
                 log.getCreatedAt()

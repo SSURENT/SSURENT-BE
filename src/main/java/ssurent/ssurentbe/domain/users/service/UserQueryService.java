@@ -7,9 +7,9 @@ import ssurent.ssurentbe.common.exception.GeneralException;
 import ssurent.ssurentbe.common.status.ErrorStatus;
 import ssurent.ssurentbe.domain.users.dto.response.UserInfoResponse;
 import ssurent.ssurentbe.domain.users.dto.response.UserPenaltyResponse;
-import ssurent.ssurentbe.domain.users.entity.UserPanaltyLog;
+import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
 import ssurent.ssurentbe.domain.users.entity.Users;
-import ssurent.ssurentbe.domain.users.repository.UserPanaltyLogRepository;
+import ssurent.ssurentbe.domain.users.repository.UserPenaltyLogRepository;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class UserQueryService {
     private final UserRepository userRepository;
-    private final UserPanaltyLogRepository userPanaltyLogRepository;
+    private final UserPenaltyLogRepository userPenaltyLogRepository;
 
     public Users getUserInfo(String username) {
         return userRepository.findByStudentNumAndDeletedFalse(username)
@@ -33,7 +33,7 @@ public class UserQueryService {
     public List<UserPenaltyResponse> getMyPenalties(String username) {
         Users user = getUserInfo(username);
 
-        List<UserPanaltyLog> logs = userPanaltyLogRepository.findByUserIdOrderByCreatedAtDesc(user);
+        List<UserPenaltyLog> logs = userPenaltyLogRepository.findByUserIdOrderByCreatedAtDesc(user);
 
         return logs.stream()
                 .map(UserPenaltyResponse::from)
