@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.dto;
+package ssurent.ssurentbe.domain.users.dto.response;
 
 import ssurent.ssurentbe.domain.users.entity.UserPanaltyLog;
 import ssurent.ssurentbe.domain.users.enums.PanaltyTypes;

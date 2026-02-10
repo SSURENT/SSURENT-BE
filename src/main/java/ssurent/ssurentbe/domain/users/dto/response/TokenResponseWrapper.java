@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.dto;
+package ssurent.ssurentbe.domain.users.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import ssurent.ssurentbe.common.base.BaseResponse;
