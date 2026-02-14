@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.service;
+package ssurent.ssurentbe.common.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.controller.docs;
+package ssurent.ssurentbe.common.auth.controller.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
