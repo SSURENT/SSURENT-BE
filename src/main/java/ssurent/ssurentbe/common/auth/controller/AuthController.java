@@ -7,14 +7,9 @@ import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.common.auth.controller.docs.AuthApiDocs;
 import ssurent.ssurentbe.common.auth.service.AuthService;
-import ssurent.ssurentbe.domain.users.dto.LoginRequest;
-import ssurent.ssurentbe.domain.users.dto.SignupRequest;
-import ssurent.ssurentbe.domain.users.dto.TokenResponse;
-import ssurent.ssurentbe.domain.users.controller.docs.AuthApiDocs;
-import ssurent.ssurentbe.domain.users.dto.request.LoginRequest;
-import ssurent.ssurentbe.domain.users.dto.request.SignupRequest;
-import ssurent.ssurentbe.domain.users.dto.response.TokenResponse;
-import ssurent.ssurentbe.domain.users.service.AuthService;
+import ssurent.ssurentbe.common.auth.dto.request.LoginRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SignupRequest;
+import ssurent.ssurentbe.common.auth.dto.response.TokenResponse;
 
 @RestController
 @RequestMapping("/api/auth")
