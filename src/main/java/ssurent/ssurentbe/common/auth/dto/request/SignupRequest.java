@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.dto.request;
+package ssurent.ssurentbe.common.auth.dto.request;
 
 public record SignupRequest(
         String studentNum,

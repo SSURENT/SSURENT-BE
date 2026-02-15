@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.dto.response;
+package ssurent.ssurentbe.common.auth.dto.response;
 
 public record TokenResponse(
         String accessToken,

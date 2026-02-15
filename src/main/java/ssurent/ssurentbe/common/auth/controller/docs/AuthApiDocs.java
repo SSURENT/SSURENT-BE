@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.controller.docs;
+package ssurent.ssurentbe.common.auth.controller.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,10 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ssurent.ssurentbe.common.base.BaseResponse;
-import ssurent.ssurentbe.domain.users.dto.request.LoginRequest;
-import ssurent.ssurentbe.domain.users.dto.request.SignupRequest;
-import ssurent.ssurentbe.domain.users.dto.response.TokenResponse;
-import ssurent.ssurentbe.domain.users.dto.response.TokenResponseWrapper;
+import ssurent.ssurentbe.common.auth.dto.request.LoginRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SignupRequest;
+import ssurent.ssurentbe.common.auth.dto.response.TokenResponse;
+import ssurent.ssurentbe.common.auth.dto.response.TokenResponseWrapper;
 
 @Tag(name = "Auth", description = "인증 API")
 public interface AuthApiDocs {
