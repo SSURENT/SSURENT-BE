@@ -34,7 +34,7 @@ public class Items extends BaseEntity {
     private Status status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "condition")
+    @Column(name = "item_condition")
     private Condition condition;
 
     @Column(name = "is_deleted")

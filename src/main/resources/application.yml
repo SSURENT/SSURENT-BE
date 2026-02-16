@@ -5,7 +5,7 @@ server:
 # Profiles
 spring:
   profiles:
-    active: prod
+    active: dev
 
 # Swagger (Springdoc OpenAPI)
 springdoc:
