@@ -12,11 +12,13 @@ import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.item.controller.docs.items.ItemAdminApiDocs;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemUpdateRequest;
+import ssurent.ssurentbe.domain.item.dto.response.AdminItemNameSearchResponse;
 import ssurent.ssurentbe.domain.item.dto.response.AdminItemResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 import ssurent.ssurentbe.domain.item.service.ItemCommandService;
 import ssurent.ssurentbe.domain.item.service.ItemQueryService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -59,6 +61,25 @@ public class ItemAdminController implements ItemAdminApiDocs {
         itemCommandService.createItem(request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+    }
+
+    @Override
+    @GetMapping("/search")
+    public ResponseEntity<BaseResponse<?>> searchItem(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam String keyword) {
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+        }
+
+        if (keyword.length() < 2) {
+            return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+        }
+
+        List<AdminItemNameSearchResponse> responses = itemQueryService.searchByName(keyword);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,responses));
     }
 
 

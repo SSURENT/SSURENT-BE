@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemUpdateRequest;
+import ssurent.ssurentbe.domain.item.dto.response.AdminItemNameSearchResponse;
 import ssurent.ssurentbe.domain.item.dto.response.AdminItemResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 
@@ -56,4 +57,18 @@ public interface ItemAdminApiDocs {
     ResponseEntity<BaseResponse<?>> createItem(
             UserDetails userDetails,
             AdminItemCreateRequest request);
+
+    @Operation(summary = "물품 키워드 검색", description = "키워드 기반으로 물품을 검색합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "물품 검색 결과 반환",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = AdminItemNameSearchResponse.class))
+                    )),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> searchItem(
+            UserDetails userDetails,
+            String keyword);
+
 }

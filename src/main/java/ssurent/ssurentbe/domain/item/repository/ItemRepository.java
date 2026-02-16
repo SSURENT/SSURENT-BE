@@ -22,4 +22,6 @@ public interface ItemRepository extends JpaRepository<Items,Long> {
 
     // Repository
     boolean existsByItemNumAndName(String itemNum, String itemName);
+
+    List<Items> findByNameStartingWith(String keyword);
 }

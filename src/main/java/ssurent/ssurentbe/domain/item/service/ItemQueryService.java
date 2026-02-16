@@ -3,6 +3,7 @@ package ssurent.ssurentbe.domain.item.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssurent.ssurentbe.domain.item.dto.response.AdminItemNameSearchResponse;
 import ssurent.ssurentbe.domain.item.dto.response.AdminItemResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 import ssurent.ssurentbe.domain.item.entity.Category;
@@ -54,6 +55,14 @@ public class ItemQueryService {
                             itemResponses
                     );
                 })
+                .toList();
+    }
+
+    public List<AdminItemNameSearchResponse> searchByName(String keyword) {
+        List<Items> items = itemRepository.findByNameStartingWith(keyword);
+
+        return items.stream()
+                .map(AdminItemNameSearchResponse::from)
                 .toList();
     }
 }

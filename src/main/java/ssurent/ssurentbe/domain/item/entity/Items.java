@@ -2,6 +2,7 @@ package ssurent.ssurentbe.domain.item.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 import ssurent.ssurentbe.common.base.BaseEntity;
 import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
