@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.response.CategoryResponse;
 
-import java.util.List;
-
 @Tag(name = "Category", description = "카테고리 API")
 public interface CategoryApiDocs {
     @Operation(summary = "카테고리 조회", description = "카테고리 목록을 조회합니다.")

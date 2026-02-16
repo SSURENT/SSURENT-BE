@@ -15,13 +15,4 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemCommandService {
 
-    private final ItemRepository itemRepository;
-
-    public List<ItemResponse> getItems(Long categoryId) {
-        List<Items> items = itemRepository.findByCategoryId(categoryId);
-
-        return items.stream()
-                .map(ItemResponse::from)
-                .toList();
-    }
 }

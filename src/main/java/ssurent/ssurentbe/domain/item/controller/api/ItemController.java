@@ -30,7 +30,7 @@ public class ItemController implements ItemApiDocs {
     public ResponseEntity<BaseResponse<?>> getItems(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Long categoryId) {
-        List<ItemResponse> items =  itemCommandService.getItems(categoryId);
+        List<ItemResponse> items =  itemQueryService.getItems(categoryId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,items));
     }
