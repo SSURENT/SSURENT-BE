@@ -20,4 +20,11 @@ public class CategoryQueryService {
                 .map(CategoryResponse::from)
                 .toList();
     }
+
+    public List<CategoryResponse> getAllCategories() {
+        List<Category> categoryList = categoryRepository.findAllIncludingDeleted();
+        return categoryList.stream()
+                .map(CategoryResponse::from)
+                .toList();
+    }
 }

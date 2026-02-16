@@ -13,7 +13,6 @@ import ssurent.ssurentbe.domain.item.dto.request.AdminCategoryCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.response.CategoryResponse;
 import ssurent.ssurentbe.domain.item.service.CategoryCommandService;
 import ssurent.ssurentbe.domain.item.service.CategoryQueryService;
-import ssurent.ssurentbe.domain.users.enums.Status;
 
 import java.util.List;
 
@@ -39,9 +38,9 @@ public class CategoryAdminController implements CategoryAdminApiDocs {
     public ResponseEntity<BaseResponse<?>> createCategories(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminCategoryCreateRequest request) {
-        categoryCommandService.createCategories(request);
+        CategoryResponse response = categoryCommandService.createCategories(request);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,response));
     }
 
     @Override

@@ -21,8 +21,8 @@ public enum ErrorStatus implements BaseStatus {
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "COMM_405", "허용되지 않은 메소드입니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMM_500", "서버 내부 오류입니다."),
 
-    ITEM_LIST_EMPTY(HttpStatus.NOT_FOUND, "ITEM4001", "현재 품목이 비어있습니다."),
-
+    DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "CATEGORY409", "이미 존재하는 카테고리 이름입니다"),
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY404", "찾을 수 없는 카테고리입니다."),
     /**
      * Auth
      */
