@@ -22,8 +22,9 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Builder.Default
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private boolean deleted = false;
 
     @Column(name = "description")
     private String description;
@@ -32,7 +33,7 @@ public class Category extends BaseEntity {
     private LocalDateTime deletedAt;
 
     public void softDelete() {
-        this.isDeleted = true;
+        this.deleted = true;
         this.deletedAt = LocalDateTime.now();
     }
 }

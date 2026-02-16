@@ -27,10 +27,10 @@ public class ItemController implements ItemApiDocs {
 
     @GetMapping()
     @Override
-    public ResponseEntity<BaseResponse<?>> getItems(
+    public ResponseEntity<BaseResponse<?>> getActiveItems(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam Long categoryId) {
-        List<ItemResponse> items =  itemQueryService.getItems(categoryId);
+        List<ItemResponse> items =  itemQueryService.getActiveItems(categoryId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,items));
     }

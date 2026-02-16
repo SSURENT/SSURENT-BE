@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestParam;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 
@@ -26,7 +24,7 @@ public interface ItemApiDocs
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    ResponseEntity<BaseResponse<?>> getItems(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam Long categoryId);
+    ResponseEntity<BaseResponse<?>> getActiveItems(
+            UserDetails userDetails,
+            Long categoryId);
 }

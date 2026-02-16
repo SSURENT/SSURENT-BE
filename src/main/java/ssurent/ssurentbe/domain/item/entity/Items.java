@@ -29,17 +29,28 @@ public class Items extends BaseEntity {
     @Column(name = "item_num", nullable = false)
     private String itemNum;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Status status;
+    private Status status = Status.ACTIVE;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "item_condition")
-    private Condition condition;
+    private Condition condition = Condition.KEEP;
 
     @Column(name = "is_deleted")
-    private boolean deleted;
+    private boolean deleted = false;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void updateStatus(Status status){
+        this.status = status;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 }
