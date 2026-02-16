@@ -12,15 +12,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemUpdateRequest;
+import ssurent.ssurentbe.domain.item.dto.response.AdminItemResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 
 @Tag(name = "Item-Admin", description = "관리자 아이템 API")
 public interface ItemAdminApiDocs {
-    @Operation(summary = "물품 조회", description = "카테고리 기반으로 물품을 조회합니다.")
+    @Operation(summary = "물품 조회", description = "카테고리 ID가 있을 경우 카테고리 기반으로, 없을 경우 모든 카테고리의 아이템을 조회합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "물품 조회 성공",
+            @ApiResponse(responseCode = "200", description = "카테고리 ID의 물품 조회 성공",
                     content = @Content(
                             array = @ArraySchema(schema = @Schema(implementation = ItemResponse.class))
+                    )),
+            @ApiResponse(responseCode = "200", description = "모든 물품 조회 성공",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = AdminItemResponse.class))
                     )),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))

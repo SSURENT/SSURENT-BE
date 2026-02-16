@@ -12,6 +12,7 @@ import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.item.controller.docs.items.ItemAdminApiDocs;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.request.AdminItemUpdateRequest;
+import ssurent.ssurentbe.domain.item.dto.response.AdminItemResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 import ssurent.ssurentbe.domain.item.service.ItemCommandService;
 import ssurent.ssurentbe.domain.item.service.ItemQueryService;
@@ -26,13 +27,18 @@ public class ItemAdminController implements ItemAdminApiDocs {
     private final ItemQueryService itemQueryService;
 
     @GetMapping()
-    @Override
     public ResponseEntity<BaseResponse<?>> getItems(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam Long categoryId) {
-        List<ItemResponse> items =  itemQueryService.getAllItems(categoryId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,items));
+            @RequestParam(required = false) Long categoryId) {
+        if (categoryId != null) {
+            // 카테고리별 조회
+            List<ItemResponse> responses = itemQueryService.getAllItemsByCategory(categoryId);
+            return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS, responses));
+        } else {
+            // 전체 조회
+            List<AdminItemResponse> responses = itemQueryService.getAllItems();
+            return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS, responses));
+        }
     }
 
     @PatchMapping
