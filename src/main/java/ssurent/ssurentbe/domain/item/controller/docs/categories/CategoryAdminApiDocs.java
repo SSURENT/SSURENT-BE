@@ -31,7 +31,7 @@ public interface CategoryAdminApiDocs {
 
     @Operation(summary = "카테고리 추가", description = "카테고리를 추가합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "카테고리 추가 성공",
+            @ApiResponse(responseCode = "201", description = "카테고리 추가 성공",
                     content = @Content(
                             schema = @Schema(implementation = CategoryResponse.class)
                     )),
@@ -50,7 +50,7 @@ public interface CategoryAdminApiDocs {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "카테고리 삭제 성공",
                     content = @Content(
-                            schema = @Schema(implementation = CategoryResponse.class)
+                            schema = @Schema(implementation = BaseResponse.class)
                     )),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),

@@ -59,7 +59,7 @@ public class ItemAdminController implements ItemAdminApiDocs {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminItemCreateRequest request) {
         itemCommandService.createItem(request);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(BaseResponse.success(SuccessStatus.COMM_CREATE_STATUS));
     }
 

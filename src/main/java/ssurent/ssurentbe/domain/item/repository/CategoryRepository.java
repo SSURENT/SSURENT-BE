@@ -13,7 +13,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "SELECT * FROM categories", nativeQuery = true)
     List<Category> findAllIncludingDeleted();
 
-    Boolean existsByName(String name);
+    boolean existsByName(String name);
 
     Optional<Category> findByName(String s);
 }
