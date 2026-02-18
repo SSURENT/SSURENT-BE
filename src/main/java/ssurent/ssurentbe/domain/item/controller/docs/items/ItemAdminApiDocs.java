@@ -20,14 +20,10 @@ import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 public interface ItemAdminApiDocs {
     @Operation(summary = "물품 조회", description = "카테고리 ID가 있을 경우 카테고리 기반으로, 없을 경우 모든 카테고리의 아이템을 조회합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "카테고리 ID의 물품 조회 성공",
-                    content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = ItemResponse.class))
-                    )),
-            @ApiResponse(responseCode = "200", description = "모든 물품 조회 성공",
-                    content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = AdminItemResponse.class))
-                    )),
+            @ApiResponse(responseCode = "200",
+                    description = "카테고리 ID가 있으면 해당 카테고리의 물품 목록(ItemResponse[])" +
+                            ", 없으면 전체 물품 현황(AdminItemResponse[])을 반환합니다."
+            ),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })

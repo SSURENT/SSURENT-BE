@@ -35,17 +35,17 @@ public class CategoryAdminController implements CategoryAdminApiDocs {
 
     @Override
     @PostMapping()
-    public ResponseEntity<BaseResponse<?>> createCategories(
+    public ResponseEntity<BaseResponse<?>> createCategory(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminCategoryCreateRequest request) {
         CategoryResponse response = categoryCommandService.createCategories(request);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,response));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(BaseResponse.success(SuccessStatus.COMM_CREATE_STATUS,response));
     }
 
     @Override
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<BaseResponse<?>> deleteCategories(
+    public ResponseEntity<BaseResponse<?>> deleteCategory(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long categoryId) {
         categoryCommandService.deleteCategory(categoryId);

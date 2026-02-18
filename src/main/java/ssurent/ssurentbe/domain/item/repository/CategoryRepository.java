@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAll();
+
     @Query(value = "SELECT * FROM categories", nativeQuery = true)
     List<Category> findAllIncludingDeleted();
+
     Boolean existsByName(String name);
 
     Optional<Category> findByName(String s);

@@ -60,24 +60,25 @@ public class ItemAdminController implements ItemAdminApiDocs {
             @RequestBody AdminItemCreateRequest request) {
         itemCommandService.createItem(request);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+                .body(BaseResponse.success(SuccessStatus.COMM_CREATE_STATUS));
     }
 
     @Override
     @GetMapping("/search")
     public ResponseEntity<BaseResponse<?>> searchItem(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam String keyword) {
+            @RequestParam(required = false) String keyword) {
 
         if (keyword == null || keyword.trim().isEmpty()) {
             return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
         }
 
-        if (keyword.length() < 2) {
+        String trimmed = keyword.trim();
+        if (trimmed.length() < 2) {
             return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
         }
 
-        List<AdminItemNameSearchResponse> responses = itemQueryService.searchByName(keyword);
+        List<AdminItemNameSearchResponse> responses = itemQueryService.searchByName(trimmed);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,responses));
     }

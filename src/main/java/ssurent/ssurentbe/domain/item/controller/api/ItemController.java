@@ -22,7 +22,6 @@ import java.util.List;
 @RequestMapping("v1/api/items")
 @RequiredArgsConstructor
 public class ItemController implements ItemApiDocs {
-    private final ItemCommandService itemCommandService;
     private final ItemQueryService itemQueryService;
 
     @GetMapping()

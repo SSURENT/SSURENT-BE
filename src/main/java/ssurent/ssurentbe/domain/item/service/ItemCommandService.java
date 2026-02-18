@@ -30,6 +30,7 @@ public class ItemCommandService {
     public List<ItemResponse> updateItemsStatus(AdminItemUpdateRequest request) {
         List<Long> itemIds = request.itemUpdates().stream()
                 .map(AdminItemUpdateRequest.ItemUpdate::itemId)
+                .distinct()
                 .toList();
 
         List<Items> items = itemRepository.findAllById(itemIds);

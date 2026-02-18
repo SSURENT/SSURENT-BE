@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.request.AdminCategoryCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.response.CategoryResponse;
@@ -36,7 +33,7 @@ public interface CategoryAdminApiDocs {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "카테고리 추가 성공",
                     content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = CategoryResponse.class))
+                            schema = @Schema(implementation = CategoryResponse.class)
                     )),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -44,7 +41,7 @@ public interface CategoryAdminApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))
             )
     })
-    ResponseEntity<BaseResponse<?>> createCategories(
+    ResponseEntity<BaseResponse<?>> createCategory(
             UserDetails userDetails,
             AdminCategoryCreateRequest request
     );
@@ -53,7 +50,7 @@ public interface CategoryAdminApiDocs {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "카테고리 삭제 성공",
                     content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = CategoryResponse.class))
+                            schema = @Schema(implementation = CategoryResponse.class)
                     )),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -61,7 +58,7 @@ public interface CategoryAdminApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))
             )
     })
-    ResponseEntity<BaseResponse<?>> deleteCategories(
+    ResponseEntity<BaseResponse<?>> deleteCategory(
             UserDetails userDetails,
             Long categoryId
     );

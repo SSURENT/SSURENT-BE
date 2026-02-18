@@ -9,6 +9,8 @@ import ssurent.ssurentbe.common.base.BaseStatus;
 @AllArgsConstructor
 public enum SuccessStatus implements BaseStatus {
     COMM_SUCCESS_STATUS(HttpStatus.OK, "COMM_200", "성공적으로 처리되었습니다."),
+    COMM_CREATE_STATUS(HttpStatus.CREATED,"COMM_201", "성공적으로 항목이 생성되었습니다."),
+
     /**
      * Auth
      */
