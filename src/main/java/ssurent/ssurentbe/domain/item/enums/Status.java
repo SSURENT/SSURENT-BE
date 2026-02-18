@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Status {
-    ACTIVE("대여 가능"),
-    INACTIVE("대여 불가");
+    ACTIVE("활성화"),
+    INACTIVE("비활성화");
 
     private String description;
 }

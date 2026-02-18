@@ -2,11 +2,13 @@ package ssurent.ssurentbe.domain.item.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 import ssurent.ssurentbe.common.base.BaseEntity;
 
 import java.time.LocalDateTime;
 
 @Entity
+@SQLRestriction("is_deleted = false")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,12 +22,18 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Builder.Default
     @Column(name = "is_deleted")
-    private boolean isDelelted;
+    private boolean deleted = false;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    public void softDelete() {
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
 }
