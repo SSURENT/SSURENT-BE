@@ -12,6 +12,7 @@ import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class RentalQueryService {
         }
 
         LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
-        LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
+        LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(LocalTime.MAX) : null;
 
         List<RentalHistory> histories = rentalRepository.findByUserIdAndFilters(
                 userId,
