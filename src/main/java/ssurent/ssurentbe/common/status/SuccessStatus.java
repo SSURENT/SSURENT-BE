@@ -19,9 +19,20 @@ public enum SuccessStatus implements BaseStatus {
     REISSUE_TOKEN_SUCCESS(HttpStatus.OK, "AUTH_200", "토큰 재발급 성공"),
     WITHDRAW_SUCCESS(HttpStatus.OK, "AUTH_200", "회원탈퇴 성공"),
     SIGNUP_SUCCESS(HttpStatus.CREATED, "AUTH_201", "회원가입 성공"),
-
-    PANELTY_CHECK_SUCCESS(HttpStatus.OK, "PANELTY_200", "징계내역 조회 성공"),
+    /**
+     * User
+     */
     PHONE_NUMBER_UPDATE_SUCCESS(HttpStatus.OK, "UPDATE_204", "전화번호 변경 성공");
+  
+    /**
+     *  Rental
+     */
+    RENTAL_HISTORY_SUCCESS(HttpStatus.OK, "RENTAL_200", "유저 대여 내역 조회 성공"),
+
+    /**
+     *  Penalty
+     */
+    PENALTY_CHECK_SUCCESS(HttpStatus.OK, "PENALTY_200", "징계내역 조회 성공");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

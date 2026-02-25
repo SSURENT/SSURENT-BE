@@ -46,8 +46,13 @@ public enum ErrorStatus implements BaseStatus {
     JWT_INVALID_TYPE(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰 타입이 유효하지 않습니다."),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JWT_401", "DB에 저장된 토큰과 일치하지 않습니다."),
     REFRESH_TOKEN_MISMATCH(HttpStatus.UNAUTHORIZED, "JWT_401", "리프레시 토큰 정보가 사용자 정보와 일치하지 않습니다."),
-    JWT_EXTRACT_ROLE_FAILED(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰에서 사용자 Role을 추출할 수 없습니다.");
+    JWT_EXTRACT_ROLE_FAILED(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰에서 사용자 Role을 추출할 수 없습니다."),
 
+    /**
+     * Rental
+     */
+    RENTAL_INVALID_DATE_RANGE(HttpStatus.BAD_REQUEST, "RENTAL_400", "시작일이 종료일보다 늦을 수 없습니다"),
+    RENTAL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND,"RENTAL_404", "대여 내역이 없습니다");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
