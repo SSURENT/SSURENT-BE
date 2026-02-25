@@ -1,5 +1,6 @@
 package ssurent.ssurentbe.domain.rental.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import ssurent.ssurentbe.domain.assists.entity.Assists;
 import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
@@ -9,7 +10,10 @@ import ssurent.ssurentbe.domain.users.entity.Users;
 import java.time.LocalDateTime;
 
 public record RentalRequest(
+        @Schema(description = "대여할 물품 ID", example = "1")
         Long itemId,
+
+        @Schema(description = "담당 도우미 이름", example = "양도영")
         String assistName
 ) {
     private static final int DEFAULT_RENTAL_DAYS = 7;
