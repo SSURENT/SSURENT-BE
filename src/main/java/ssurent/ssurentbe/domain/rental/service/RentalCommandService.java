@@ -31,7 +31,7 @@ public class RentalCommandService {
         Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
-        Items item = itemRepository.findById(request.itemId())
+        Items item = itemRepository.findByIdWithLock(request.itemId())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.ITEM_NOT_FOUND));
 
         if (item.isDeleted()) {
