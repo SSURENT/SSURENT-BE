@@ -36,7 +36,7 @@ public interface RentalApiDocs {
             @RequestBody RentalRequest request
     );
 
-    @Operation(summary = "내 대여 목록 조회", description = "로그인한 사용자의 전체 대여 내역을 조회합니다.")
+    @Operation(summary = "내 대여 목록 조회", description = "로그인한 사용자의 현재 대여 중인 물품 목록을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "내 대여 목록 조회 성공",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),
