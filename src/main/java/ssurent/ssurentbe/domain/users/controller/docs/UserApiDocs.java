@@ -36,7 +36,7 @@ public interface UserApiDocs {
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    ResponseEntity<Void> updatePhoneNumber(
+    ResponseEntity<BaseResponse<Void>> updatePhoneNumber(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody UpdatePhoneNumberRequest request
     );

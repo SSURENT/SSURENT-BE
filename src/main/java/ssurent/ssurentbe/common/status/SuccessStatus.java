@@ -20,7 +20,8 @@ public enum SuccessStatus implements BaseStatus {
     WITHDRAW_SUCCESS(HttpStatus.OK, "AUTH_200", "회원탈퇴 성공"),
     SIGNUP_SUCCESS(HttpStatus.CREATED, "AUTH_201", "회원가입 성공"),
 
-    PANELTY_CHECK_SUCCESS(HttpStatus.OK, "PANELTY_200", "징계내역 조회 성공");
+    PANELTY_CHECK_SUCCESS(HttpStatus.OK, "PANELTY_200", "징계내역 조회 성공"),
+    PHONE_NUMBER_UPDATE_SUCCESS(HttpStatus.OK, "UPDATE_200", "전화번호 변경 성공");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

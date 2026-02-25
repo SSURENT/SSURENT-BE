@@ -32,7 +32,7 @@ public class UserController implements UserApiDocs {
 
     @Override
     @PatchMapping("/phone-number")
-    public ResponseEntity<Void> updatePhoneNumber(
+    public ResponseEntity<BaseResponse<Void>> updatePhoneNumber(
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody UpdatePhoneNumberRequest request
     ) {
@@ -40,7 +40,10 @@ public class UserController implements UserApiDocs {
                 userDetails.getUsername(),
                 request.phoneNum()
         );
-        return ResponseEntity.noContent().build();
+        SuccessStatus status = SuccessStatus.PHONE_NUMBER_UPDATE_SUCCESS;
+
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, null));
     }
     @Override
     @GetMapping("/penalties")
