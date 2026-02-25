@@ -28,10 +28,10 @@ public class RentalAdminController implements RentalAdminApiDocs {
     @GetMapping
     public ResponseEntity<BaseResponse<?>> getUserRentalHistory(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam Long userId,
-            @RequestParam(required = false) LocalDate startDate,
-            @RequestParam(required = false) LocalDate endDate,
-            @RequestParam(required = false) String itemName
+            @RequestParam("userId") Long userId,
+            @RequestParam(name = "startDate", required = false) LocalDate startDate,
+            @RequestParam(name = "endDate", required = false) LocalDate endDate,
+            @RequestParam(name = "itemName", required = false) String itemName
     ) {
         List<AdminUserRentalHistoryResponse> responses =
                 rentalQueryService.getUserRentalHistory(userId, startDate, endDate, itemName);

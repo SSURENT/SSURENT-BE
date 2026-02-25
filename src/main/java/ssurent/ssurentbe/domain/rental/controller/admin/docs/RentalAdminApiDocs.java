@@ -1,6 +1,7 @@
 package ssurent.ssurentbe.domain.rental.controller.admin.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,9 +40,13 @@ public interface RentalAdminApiDocs {
     })
     ResponseEntity<BaseResponse<?>> getUserRentalHistory(
             @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(name = "userId", description = "조회할 유저 ID", required = true, example = "1")
             @RequestParam Long userId,
+            @Parameter(name = "startDate", description = "조회 시작일 (yyyy-MM-dd)", example = "2025-01-01")
             @RequestParam(required = false) LocalDate startDate,
+            @Parameter(name = "endDate", description = "조회 종료일 (yyyy-MM-dd)", example = "2025-12-31")
             @RequestParam(required = false) LocalDate endDate,
+            @Parameter(name = "itemName", description = "물품명 키워드 (부분 일치)", example = "노트북")
             @RequestParam(required = false) String itemName
     );
 }
