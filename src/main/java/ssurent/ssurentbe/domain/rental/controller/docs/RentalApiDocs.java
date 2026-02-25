@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import java.util.List;
 
 @Tag(name = "Rental", description = "물품 대여 API")
 public interface RentalApiDocs {
@@ -33,5 +34,18 @@ public interface RentalApiDocs {
     ResponseEntity<BaseResponse<?>> createRental(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody RentalRequest request
+    );
+
+    @Operation(summary = "내 대여 목록 조회", description = "로그인한 사용자의 전체 대여 내역을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "내 대여 목록 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "대여 내역 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> getMyRentals(
+            @AuthenticationPrincipal UserDetails userDetails
     );
 }

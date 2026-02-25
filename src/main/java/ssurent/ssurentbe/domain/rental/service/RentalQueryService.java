@@ -6,8 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ssurent.ssurentbe.common.exception.GeneralException;
 import ssurent.ssurentbe.common.status.ErrorStatus;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
+import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
+import ssurent.ssurentbe.domain.rental.enums.Status;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
+import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.time.LocalDate;
@@ -22,6 +25,21 @@ public class RentalQueryService {
 
     private final UserRepository userRepository;
     private final RentalRepository rentalRepository;
+
+    public List<RentalItemResponse> getMyRentals(String studentNum) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        List<RentalHistory> histories = rentalRepository.findActiveRentalsByUserId(user.getId(), Status.RENT);
+
+        if (histories.isEmpty()) {
+            throw new GeneralException(ErrorStatus.RENTAL_HISTORY_NOT_FOUND);
+        }
+
+        return histories.stream()
+                .map(RentalItemResponse::from)
+                .toList();
+    }
 
     public List<AdminUserRentalHistoryResponse> getUserRentalHistory(
             Long userId,

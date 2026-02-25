@@ -12,6 +12,9 @@ import ssurent.ssurentbe.domain.rental.controller.docs.RentalApiDocs;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.service.RentalCommandService;
+import ssurent.ssurentbe.domain.rental.service.RentalQueryService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ import ssurent.ssurentbe.domain.rental.service.RentalCommandService;
 public class RentalController implements RentalApiDocs {
 
     private final RentalCommandService rentalCommandService;
+    private final RentalQueryService rentalQueryService;
 
     @Override
     @PostMapping
@@ -29,5 +33,14 @@ public class RentalController implements RentalApiDocs {
         RentalItemResponse response = rentalCommandService.createRental(userDetails.getUsername(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(BaseResponse.success(SuccessStatus.RENTAL_CREATE_SUCCESS, response));
+    }
+
+    @Override
+    @GetMapping("/my")
+    public ResponseEntity<BaseResponse<?>> getMyRentals(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        List<RentalItemResponse> responses = rentalQueryService.getMyRentals(userDetails.getUsername());
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.MY_RENTAL_SUCCESS, responses));
     }
 }
