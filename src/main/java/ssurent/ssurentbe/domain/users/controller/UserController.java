@@ -48,7 +48,7 @@ public class UserController implements UserApiDocs {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         List<UserPenaltyResponse> data = userQueryService.getMyPenalties(userDetails.getUsername());
-        SuccessStatus status = SuccessStatus.PANELTY_CHECK_SUCCESS;
+        SuccessStatus status = SuccessStatus.PENALTY_CHECK_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
                 .body(BaseResponse.success(status, data));
     }
