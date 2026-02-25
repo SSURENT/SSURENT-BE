@@ -9,6 +9,7 @@ public record UserPenaltyResponse(
         Long penaltyId,
         PenaltyTypes penaltyType,
         Long itemId,
+        String itemName,
         Long rentalHistoryId,
         LocalDateTime createdAt
 ) {
@@ -17,6 +18,7 @@ public record UserPenaltyResponse(
                 log.getId(),
                 log.getPenaltyType(),
                 log.getItemsId() != null ? log.getItemsId().getId() : null,
+                log.getItemsId() != null ? log.getItemsId().getName() : null,
                 log.getRentalHistoryId() != null ? log.getRentalHistoryId().getId() : null,
                 log.getCreatedAt()
         );
