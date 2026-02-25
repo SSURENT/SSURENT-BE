@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
@@ -28,7 +29,7 @@ public class RentalController implements RentalApiDocs {
     @PostMapping
     public ResponseEntity<BaseResponse<?>> createRental(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody RentalRequest request
+            @Valid @RequestBody RentalRequest request
     ) {
         RentalItemResponse response = rentalCommandService.createRental(userDetails.getUsername(), request);
         return ResponseEntity.status(HttpStatus.CREATED)
