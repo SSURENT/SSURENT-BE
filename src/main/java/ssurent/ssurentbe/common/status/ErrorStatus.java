@@ -48,6 +48,13 @@ public enum ErrorStatus implements BaseStatus {
     REFRESH_TOKEN_MISMATCH(HttpStatus.UNAUTHORIZED, "JWT_401", "리프레시 토큰 정보가 사용자 정보와 일치하지 않습니다."),
     JWT_EXTRACT_ROLE_FAILED(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰에서 사용자 Role을 추출할 수 없습니다."),
 
+    ITEM_NOT_AVAILABLE(HttpStatus.CONFLICT, "ITEM_409", "이미 대여 중인 물품입니다."),
+
+    /**
+     * Assists
+     */
+    ASSIST_NOT_FOUND(HttpStatus.NOT_FOUND, "ASSIST_404", "도우미를 찾을 수 없습니다."),
+
     /**
      * Rental
      */

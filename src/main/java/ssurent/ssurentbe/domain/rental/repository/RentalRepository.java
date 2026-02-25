@@ -5,10 +5,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 
+import ssurent.ssurentbe.domain.rental.enums.Status;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
+
+    @Query("SELECT rh FROM RentalHistory rh " +
+            "JOIN FETCH rh.itemId i " +
+            "WHERE rh.userId.id = :userId " +
+            "AND rh.status = :status " +
+            "ORDER BY rh.rentalDate DESC")
+    List<RentalHistory> findActiveRentalsByUserId(
+            @Param("userId") Long userId,
+            @Param("status") Status status
+    );
 
     @Query("SELECT rh FROM RentalHistory rh " +
             "JOIN FETCH rh.itemId i " +

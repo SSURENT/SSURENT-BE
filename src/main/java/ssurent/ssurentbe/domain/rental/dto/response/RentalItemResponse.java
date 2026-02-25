@@ -9,7 +9,8 @@ public record RentalItemResponse(
         Long rentalId,
         Long itemId,
         String itemName,
-        LocalDateTime dueDate
+        LocalDateTime dueDate,
+        boolean overdue
 ) {
     public static RentalItemResponse from(RentalHistory rentalHistory) {
         Items items = rentalHistory.getItemId();
@@ -18,7 +19,8 @@ public record RentalItemResponse(
                 rentalHistory.getId(),
                 rentalHistory.getItemId().getId(),
                 itemName,
-                rentalHistory.getDueDate()
+                rentalHistory.getDueDate(),
+                rentalHistory.isOverdue()
         );
     }
 }
