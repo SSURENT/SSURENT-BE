@@ -2,7 +2,6 @@ package ssurent.ssurentbe.domain.rental.controller.admin.docs;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestParam;
 import ssurent.ssurentbe.common.base.BaseResponse;
-import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
 
 import java.time.LocalDate;
 
@@ -28,9 +26,7 @@ public interface RentalAdminApiDocs {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "대여 내역 조회 성공",
-                    content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = AdminUserRentalHistoryResponse.class))
-                    )),
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "400", description = "시작일이 종료일보다 늦음",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "401", description = "인증 실패",
