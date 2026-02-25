@@ -24,6 +24,7 @@ public enum SuccessStatus implements BaseStatus {
      *  Rental
      */
     RENTAL_CREATE_SUCCESS(HttpStatus.CREATED, "RENTAL_201", "물품 대여 성공"),
+    MY_RENTAL_SUCCESS(HttpStatus.OK, "RENTAL_200", "내 대여 목록 조회 성공"),
     RENTAL_HISTORY_SUCCESS(HttpStatus.OK, "RENTAL_200", "유저 대여 내역 조회 성공"),
 
     /**
