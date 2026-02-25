@@ -12,7 +12,7 @@ import ssurent.ssurentbe.common.auth.dto.request.SignupRequest;
 import ssurent.ssurentbe.common.auth.dto.response.TokenResponse;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/v1/api/auth")
 @RequiredArgsConstructor
 public class AuthController implements AuthApiDocs {
 
