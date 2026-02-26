@@ -11,6 +11,7 @@ import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
@@ -58,5 +59,24 @@ public class RentalCommandService {
         item.updateCondition(Condition.RENT);
 
         return RentalItemResponse.from(rentalHistory);
+    }
+
+    @Transactional
+    public void extendRental(String studentNum, RentalExtendRequest request) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        RentalHistory rentalHistory = rentalRepository.findById(request.rentalId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.RENTAL_HISTORY_NOT_FOUND));
+
+        if (!rentalHistory.getUserId().getId().equals(user.getId())) {
+            throw new GeneralException(ErrorStatus.FORBIDDEN);
+        }
+
+        if (rentalHistory.isPostponed()) {
+            throw new GeneralException(ErrorStatus.RENTAL_ALREADY_EXTENDED);
+        }
+
+        rentalHistory.extend();
     }
 }

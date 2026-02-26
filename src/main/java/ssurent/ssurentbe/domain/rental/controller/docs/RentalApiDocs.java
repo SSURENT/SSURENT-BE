@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import ssurent.ssurentbe.common.base.BaseResponse;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import java.util.List;
 
@@ -47,5 +48,23 @@ public interface RentalApiDocs {
     })
     ResponseEntity<BaseResponse<?>> getMyRentals(
             @AuthenticationPrincipal UserDetails userDetails
+    );
+
+    @Operation(summary = "대여 기한 연장", description = "대여 반납 예정일을 3일 연장합니다. 1회만 연장 가능합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "대여 기한 연장 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "본인의 대여가 아님",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "대여 내역 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "409", description = "이미 연장된 대여",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> extendRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody RentalExtendRequest request
     );
 }
