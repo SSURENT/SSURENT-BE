@@ -75,6 +75,10 @@ public class RentalCommandService {
             throw new GeneralException(ErrorStatus.FORBIDDEN);
         }
 
+        if (rentalHistory.getStatus() == RETURN) {
+            throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
+        }
+
         if (rentalHistory.isPostponed()) {
             throw new GeneralException(ErrorStatus.RENTAL_ALREADY_EXTENDED);
         }
