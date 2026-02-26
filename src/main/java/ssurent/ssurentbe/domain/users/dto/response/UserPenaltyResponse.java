@@ -18,7 +18,7 @@ public record UserPenaltyResponse(
                 log.getId(),
                 log.getPenaltyType(),
                 log.getItemsId() != null ? log.getItemsId().getId() : null,
-                log.getItemsId() != null ? log.getItemsId().getName() : null,
+                log.getItemsId() != null ? log.getItemsId().getCategoryId().getName() : null,
                 log.getRentalHistoryId() != null ? log.getRentalHistoryId().getId() : null,
                 log.getCreatedAt()
         );

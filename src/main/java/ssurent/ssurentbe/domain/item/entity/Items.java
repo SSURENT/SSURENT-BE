@@ -24,8 +24,8 @@ public class Items extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name="item_name", nullable = false)
+    private String itemName;
 
     @Column(name = "item_num", nullable = false)
     private String itemNum;
