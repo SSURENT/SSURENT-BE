@@ -55,4 +55,11 @@ public class RentalHistory extends BaseEntity {
         this.dueDate = this.dueDate.plusDays(3);
         this.postponed = true;
     }
+
+    public void returnRental() {
+        LocalDateTime now = LocalDateTime.now();
+        this.returnDate = now;
+        this.status = ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
+        this.overdue = now.isAfter(this.dueDate);
+    }
 }
