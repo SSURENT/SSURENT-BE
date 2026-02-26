@@ -47,4 +47,7 @@ public class RentalHistory extends BaseEntity {
 
     @Column(name = "is_overdue")
     private boolean overdue;
+
+    @Column(name = "is_postponed")
+    private boolean postponed;
 }
