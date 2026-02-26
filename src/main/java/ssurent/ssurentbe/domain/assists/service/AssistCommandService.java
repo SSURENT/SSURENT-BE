@@ -9,9 +9,6 @@ import ssurent.ssurentbe.domain.assists.dto.request.AdminAssistCreateRequest;
 import ssurent.ssurentbe.domain.assists.dto.response.AdminAssistResponse;
 import ssurent.ssurentbe.domain.assists.entity.Assists;
 import ssurent.ssurentbe.domain.assists.repository.AssistsRepository;
-import ssurent.ssurentbe.domain.item.dto.request.AdminCategoryCreateRequest;
-import ssurent.ssurentbe.domain.item.dto.response.CategoryResponse;
-import ssurent.ssurentbe.domain.item.entity.Category;
 
 @Service
 @RequiredArgsConstructor

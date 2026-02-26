@@ -3,8 +3,6 @@ package ssurent.ssurentbe.domain.assists.controller.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
@@ -25,8 +23,7 @@ public class AssistAdminController implements AssistAdminApiDocs {
 
     @GetMapping
     @Override
-    public ResponseEntity<BaseResponse<?>> getAssists(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<BaseResponse<?>> getAssists() {
         List<AdminAssistResponse> assists =  assistQueryService.getAssists();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,assists));
@@ -44,7 +41,6 @@ public class AssistAdminController implements AssistAdminApiDocs {
     @DeleteMapping("/{assistId}")
     @Override
     public ResponseEntity<BaseResponse<?>> deleteAssists(
-            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long assistId) {
         assistCommandService.deleteAssist(assistId);
         return ResponseEntity.status(HttpStatus.OK)

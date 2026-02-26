@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.request.AdminCategoryCreateRequest;
 import ssurent.ssurentbe.domain.item.dto.response.CategoryResponse;
@@ -26,7 +25,6 @@ public interface CategoryAdminApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<?>> getCategories(
-            UserDetails userDetails
     );
 
     @Operation(summary = "카테고리 추가", description = "카테고리를 추가합니다.")
@@ -42,7 +40,6 @@ public interface CategoryAdminApiDocs {
             )
     })
     ResponseEntity<BaseResponse<?>> createCategory(
-            UserDetails userDetails,
             AdminCategoryCreateRequest request
     );
 
@@ -59,7 +56,6 @@ public interface CategoryAdminApiDocs {
             )
     })
     ResponseEntity<BaseResponse<?>> deleteCategory(
-            UserDetails userDetails,
             Long categoryId
     );
 }

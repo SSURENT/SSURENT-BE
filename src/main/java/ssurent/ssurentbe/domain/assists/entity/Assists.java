@@ -37,5 +37,6 @@ public class Assists extends BaseEntity {
 
     public void softDelete() {
         this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 }

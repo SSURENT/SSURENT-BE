@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.assists.dto.request.AdminAssistCreateRequest;
 import ssurent.ssurentbe.domain.assists.dto.response.AdminAssistResponse;
@@ -25,7 +24,6 @@ public interface AssistAdminApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<?>> getAssists(
-            UserDetails userDetails
     );
 
     @Operation(summary = "대여사업 도우미 생성", description = "대여사업 도우미를 생성합니다.")
@@ -45,13 +43,12 @@ public interface AssistAdminApiDocs {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "대여사업 도우미 삭제 성공",
                     content = @Content(
-                            schema = @Schema(implementation = AdminAssistResponse.class)
+                            schema = @Schema(implementation = BaseResponse.class)
                     )),
             @ApiResponse(responseCode = "401", description = "인증 실패",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<?>> deleteAssists(
-            UserDetails userDetails,
             Long assistId
     );
 

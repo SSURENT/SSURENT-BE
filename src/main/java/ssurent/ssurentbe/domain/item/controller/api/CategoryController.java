@@ -3,8 +3,6 @@ package ssurent.ssurentbe.domain.item.controller.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +24,7 @@ public class CategoryController implements CategoryApiDocs {
 
     @Override
     @GetMapping
-    public ResponseEntity<BaseResponse<?>> getCategories(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<BaseResponse<?>> getCategories() {
         List<CategoryResponse> categories =  categoryQueryService.getCategories();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,categories));

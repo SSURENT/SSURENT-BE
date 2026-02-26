@@ -3,8 +3,6 @@ package ssurent.ssurentbe.domain.item.controller.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
@@ -26,8 +24,7 @@ public class CategoryAdminController implements CategoryAdminApiDocs {
 
     @Override
     @GetMapping()
-    public ResponseEntity<BaseResponse<?>> getCategories(
-            @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<BaseResponse<?>> getCategories() {
         List<CategoryResponse> categories =  categoryQueryService.getCategories();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS,categories));
@@ -36,7 +33,6 @@ public class CategoryAdminController implements CategoryAdminApiDocs {
     @Override
     @PostMapping()
     public ResponseEntity<BaseResponse<?>> createCategory(
-            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminCategoryCreateRequest request) {
         CategoryResponse response = categoryCommandService.createCategories(request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -46,7 +42,6 @@ public class CategoryAdminController implements CategoryAdminApiDocs {
     @Override
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<BaseResponse<?>> deleteCategory(
-            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long categoryId) {
         categoryCommandService.deleteCategory(categoryId);
         return ResponseEntity.status(HttpStatus.OK)
