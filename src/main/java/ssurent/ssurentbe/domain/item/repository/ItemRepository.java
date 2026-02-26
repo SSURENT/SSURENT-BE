@@ -28,7 +28,7 @@ public interface ItemRepository extends JpaRepository<Items,Long> {
     @Query("SELECT i FROM Items i WHERE i.id = :id")
     Optional<Items> findByIdWithLock(@Param("id") Long id);
 
-    List<Items> findByItemNameStartingWith(String keyword);
+    List<Items> findByItemNameStartingWithAndDeletedFalse(String keyword);
 
-    boolean existsByItemNumAndCategoryId(String itemNum, Category categoryId);
+    boolean existsByItemNumAndCategoryIdAndDeletedFalse(String itemNum, Category categoryId);
 }

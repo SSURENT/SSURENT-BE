@@ -64,7 +64,7 @@ public class ItemCommandService {
         // itemNum -> categoryName 순서로 타게 하기(인덱스가 없다면 일단...)
         Category category = categoryRepository.findByName(request.categoryName())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.CATEGORY_NOT_FOUND));
-        if(itemRepository.existsByItemNumAndCategoryId(request.itemNum(), category)){
+        if(itemRepository.existsByItemNumAndCategoryIdAndDeletedFalse(request.itemNum(), category)){
             throw new GeneralException(ErrorStatus.DUPLICATE_ITEM);
         }
 
