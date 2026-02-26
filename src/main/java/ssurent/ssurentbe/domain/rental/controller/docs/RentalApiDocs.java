@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import java.util.List;
 
 @Tag(name = "Rental", description = "물품 대여 API")
@@ -66,5 +67,23 @@ public interface RentalApiDocs {
     ResponseEntity<BaseResponse<?>> extendRental(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody RentalExtendRequest request
+    );
+
+    @Operation(summary = "물품 반납", description = "대여 중인 물품을 반납합니다. 반납 예정일이 지난 경우 연체 처리됩니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "물품 반납 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "본인의 대여가 아님",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "대여 내역 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "409", description = "이미 반납된 대여",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> returnRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody RentalReturnRequest request
     );
 }

@@ -13,10 +13,12 @@ import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RENT;
+import static ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
@@ -78,5 +80,28 @@ public class RentalCommandService {
         }
 
         rentalHistory.extend();
+    }
+
+    @Transactional
+    public void returnRental(String studentNum, RentalReturnRequest request) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        RentalHistory rentalHistory = rentalRepository.findById(request.rentalId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.RENTAL_HISTORY_NOT_FOUND));
+
+        if (!rentalHistory.getUserId().getId().equals(user.getId())) {
+            throw new GeneralException(ErrorStatus.FORBIDDEN);
+        }
+
+        if (rentalHistory.getStatus() == RETURN) {
+            throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
+        }
+
+        rentalHistory.returnRental();
+
+        Items item = rentalHistory.getItemId();
+        item.updateStatus(Status.ACTIVE);
+        item.updateCondition(Condition.KEEP);
     }
 }

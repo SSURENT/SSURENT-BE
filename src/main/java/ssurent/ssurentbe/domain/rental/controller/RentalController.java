@@ -12,6 +12,7 @@ import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.rental.controller.docs.RentalApiDocs;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.service.RentalCommandService;
 import ssurent.ssurentbe.domain.rental.service.RentalQueryService;
@@ -54,5 +55,15 @@ public class RentalController implements RentalApiDocs {
     ) {
         rentalCommandService.extendRental(userDetails.getUsername(), request);
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_EXTEND_SUCCESS, null));
+    }
+
+    @Override
+    @PostMapping("/return")
+    public ResponseEntity<BaseResponse<?>> returnRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalReturnRequest request
+    ) {
+        rentalCommandService.returnRental(userDetails.getUsername(), request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_RETURN_SUCCESS, null));
     }
 }
