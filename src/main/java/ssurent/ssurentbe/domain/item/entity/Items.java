@@ -50,6 +50,10 @@ public class Items extends BaseEntity {
         this.status = status;
     }
 
+    public void updateCondition(Condition condition) {
+        this.condition = condition;
+    }
+
     public void softDelete() {
         this.deleted = true;
         this.deletedAt = LocalDateTime.now();

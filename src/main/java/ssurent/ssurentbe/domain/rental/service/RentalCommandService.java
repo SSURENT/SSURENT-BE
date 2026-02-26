@@ -8,12 +8,14 @@ import ssurent.ssurentbe.common.status.ErrorStatus;
 import ssurent.ssurentbe.domain.assists.entity.Assists;
 import ssurent.ssurentbe.domain.assists.repository.AssistsRepository;
 import ssurent.ssurentbe.domain.item.entity.Items;
+import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
+import static ssurent.ssurentbe.domain.rental.enums.Status.RENT;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
@@ -42,6 +44,10 @@ public class RentalCommandService {
             throw new GeneralException(ErrorStatus.ITEM_NOT_AVAILABLE);
         }
 
+        if (rentalRepository.existsByItemId_IdAndStatus(item.getId(), RENT)) {
+            throw new GeneralException(ErrorStatus.ITEM_NOT_AVAILABLE);
+        }
+
         Assists assist = assistsRepository.findByNameAndDeletedFalse(request.assistName())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.ASSIST_NOT_FOUND));
 
@@ -49,6 +55,7 @@ public class RentalCommandService {
 
         rentalRepository.save(rentalHistory);
         item.updateStatus(Status.INACTIVE);
+        item.updateCondition(Condition.RENT);
 
         return RentalItemResponse.from(rentalHistory);
     }
