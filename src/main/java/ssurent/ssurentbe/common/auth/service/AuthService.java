@@ -45,7 +45,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getStudentNum());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getStudentNum());
 
-        return TokenResponse.of(accessToken, refreshToken);
+        return TokenResponse.of(accessToken, refreshToken, user.getRole());
     }
 
     public TokenResponse login(LoginRequest request) {
@@ -63,7 +63,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getStudentNum());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getStudentNum());
 
-        return TokenResponse.of(accessToken, refreshToken);
+        return TokenResponse.of(accessToken, refreshToken, user.getRole());
     }
 
     public TokenResponse refresh(String refreshToken) {
@@ -83,6 +83,6 @@ public class AuthService {
         String newAccessToken = jwtTokenProvider.createAccessToken(studentNum);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(studentNum);
 
-        return TokenResponse.of(newAccessToken, newRefreshToken);
+        return TokenResponse.of(newAccessToken, newRefreshToken, user.getRole());
     }
 }
