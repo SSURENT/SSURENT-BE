@@ -2,6 +2,7 @@ package ssurent.ssurentbe.domain.assists.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 import ssurent.ssurentbe.common.base.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "Assists")
+@SQLRestriction("is_deleted = false")
 public class Assists extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +33,9 @@ public class Assists extends BaseEntity {
         this.deleted = true;
         this.deletedAt = LocalDateTime.now();
         this.name = null;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
     }
 }
