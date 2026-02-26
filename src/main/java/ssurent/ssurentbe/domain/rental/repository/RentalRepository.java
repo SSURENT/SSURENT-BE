@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
 
+    boolean existsByItemId_IdAndStatus(Long itemId, Status status);
+
     @Query("SELECT rh FROM RentalHistory rh " +
             "JOIN FETCH rh.itemId i " +
             "WHERE rh.userId.id = :userId " +
