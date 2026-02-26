@@ -35,18 +35,17 @@ jobs:
                 hibernate:
                   format_sql: false
                   dialect: org.hibernate.dialect.MySQLDialect
+            data:
+              redis:
+                host: ${REDIS_HOST}
+                port: ${REDIS_PORT:6379}
+                password: ${REDIS_PASSWORD}
           logging:
             level:
               root: INFO
               ssurent.ssurentbe: INFO
           jwt:
             secret: ${JWT_SECRET}
-          spring:
-            data:
-              redis:
-                host: ${REDIS_HOST}
-                port: ${REDIS_PORT:6379}
-                password: ${REDIS_PASSWORD}
           EOF
 
       - name: Grant execute permission for Gradle Wrapper
