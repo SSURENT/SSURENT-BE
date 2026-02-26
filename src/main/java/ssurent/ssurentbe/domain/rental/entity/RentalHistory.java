@@ -50,4 +50,9 @@ public class RentalHistory extends BaseEntity {
 
     @Column(name = "is_postponed")
     private boolean postponed;
+
+    public void extend() {
+        this.dueDate = this.dueDate.plusDays(3);
+        this.postponed = true;
+    }
 }
