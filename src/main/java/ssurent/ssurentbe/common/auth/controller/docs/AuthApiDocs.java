@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ssurent.ssurentbe.common.base.BaseResponse;
@@ -46,4 +47,13 @@ public interface AuthApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<TokenResponse>> refresh(@RequestHeader("Authorization") String authorization);
+
+    @Operation(summary = "로그아웃", description = "액세스 토큰으로 로그아웃합니다. Redis에 저장된 리프레시 토큰을 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "유효하지 않은 토큰",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<Void>> logout(Authentication authentication);
 }

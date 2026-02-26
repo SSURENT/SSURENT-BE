@@ -2,8 +2,11 @@ package ssurent.ssurentbe.common.auth.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
+import ssurent.ssurentbe.common.exception.GeneralException;
+import ssurent.ssurentbe.common.status.ErrorStatus;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.common.auth.controller.docs.AuthApiDocs;
 import ssurent.ssurentbe.common.auth.service.AuthService;
@@ -44,5 +47,17 @@ public class AuthController implements AuthApiDocs {
         SuccessStatus status = SuccessStatus.REISSUE_TOKEN_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
                 .body(BaseResponse.success(status, data));
+    }
+
+    @Override
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponse<Void>> logout(Authentication authentication) {
+        if (authentication == null) {
+            throw new GeneralException(ErrorStatus.UNAUTHORIZED);
+        }
+        authService.logout(authentication.getName());
+        SuccessStatus status = SuccessStatus.LOGOUT_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status));
     }
 }
