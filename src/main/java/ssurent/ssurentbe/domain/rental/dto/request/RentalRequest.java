@@ -20,7 +20,7 @@ public record RentalRequest(
         @Schema(description = "담당 도우미 이름", example = "양도영")
         String assistName
 ) {
-    private static final int DEFAULT_RENTAL_DAYS = 7;
+    private static final int DEFAULT_RENTAL_DAYS = 3;
 
     public RentalHistory toEntity(Assists assist, Users user, Items item) {
         LocalDateTime now = LocalDateTime.now();

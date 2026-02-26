@@ -59,7 +59,9 @@ public enum ErrorStatus implements BaseStatus {
      * Rental
      */
     RENTAL_INVALID_DATE_RANGE(HttpStatus.BAD_REQUEST, "RENTAL_400", "시작일이 종료일보다 늦을 수 없습니다"),
-    RENTAL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND,"RENTAL_404", "대여 내역이 없습니다");
+    RENTAL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND,"RENTAL_404", "대여 내역이 없습니다"),
+    RENTAL_ALREADY_EXTENDED(HttpStatus.CONFLICT, "RENTAL_409", "이미 연장된 대여입니다."),
+    RENTAL_ALREADY_RETURNED(HttpStatus.CONFLICT, "RENTAL_409", "이미 반납된 대여입니다.");
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;

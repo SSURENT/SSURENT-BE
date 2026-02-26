@@ -47,4 +47,17 @@ public class RentalHistory extends BaseEntity {
 
     @Column(name = "is_overdue")
     private boolean overdue;
+
+    @Column(name = "is_postponed")
+    private boolean postponed;
+
+    public void extend() {
+        this.dueDate = this.dueDate.plusDays(3);
+        this.postponed = true;
+    }
+
+    public void returnRental() {
+        this.returnDate = LocalDateTime.now();
+        this.status = ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
+    }
 }

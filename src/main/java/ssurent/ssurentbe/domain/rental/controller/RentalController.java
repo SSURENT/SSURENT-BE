@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.rental.controller.docs.RentalApiDocs;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.service.RentalCommandService;
 import ssurent.ssurentbe.domain.rental.service.RentalQueryService;
@@ -43,5 +45,25 @@ public class RentalController implements RentalApiDocs {
     ) {
         List<RentalItemResponse> responses = rentalQueryService.getMyRentals(userDetails.getUsername());
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.MY_RENTAL_SUCCESS, responses));
+    }
+
+    @Override
+    @PatchMapping("/extend")
+    public ResponseEntity<BaseResponse<?>> extendRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalExtendRequest request
+    ) {
+        rentalCommandService.extendRental(userDetails.getUsername(), request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_EXTEND_SUCCESS, null));
+    }
+
+    @Override
+    @PostMapping("/return")
+    public ResponseEntity<BaseResponse<?>> returnRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalReturnRequest request
+    ) {
+        rentalCommandService.returnRental(userDetails.getUsername(), request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_RETURN_SUCCESS, null));
     }
 }
