@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -22,11 +23,11 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory factory = new LettuceConnectionFactory(host, port);
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
         if (password != null && !password.isBlank()) {
-            factory.setPassword(password);
+            config.setPassword(password);
         }
-        return factory;
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean
