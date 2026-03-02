@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssurent.ssurentbe.common.exception.GeneralException;
 import ssurent.ssurentbe.common.status.ErrorStatus;
+import ssurent.ssurentbe.domain.item.repository.CategoryRepository;
+import ssurent.ssurentbe.domain.rental.dto.response.AdminCategoryRentalStatisticsResponse;
+import ssurent.ssurentbe.domain.rental.dto.response.AdminItemRentalStatisticsResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
@@ -25,6 +28,7 @@ public class RentalQueryService {
 
     private final UserRepository userRepository;
     private final RentalRepository rentalRepository;
+    private final CategoryRepository categoryRepository;
 
     public List<RentalItemResponse> getMyRentals(String studentNum) {
         Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
@@ -71,6 +75,51 @@ public class RentalQueryService {
 
         return histories.stream()
                 .map(AdminUserRentalHistoryResponse::from)
+                .toList();
+    }
+
+    public List<?> getRentalItemStatistics(
+            String categoryId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        if (startDate.isAfter(endDate)) {
+            throw new GeneralException(ErrorStatus.RENTAL_INVALID_DATE_RANGE);
+        }
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(LocalTime.MAX);
+
+        if ("ALL".equalsIgnoreCase(categoryId)) {
+            List<Object[]> results = rentalRepository.countByCategoryAndDateRange(startDateTime, endDateTime);
+            return results.stream()
+                    .map(row -> new AdminCategoryRentalStatisticsResponse(
+                            (Long) row[0],
+                            (String) row[1],
+                            (Long) row[2]
+                    ))
+                    .toList();
+        }
+
+        Long categoryIdLong;
+        try {
+            categoryIdLong = Long.parseLong(categoryId);
+        } catch (NumberFormatException e) {
+            throw new GeneralException(ErrorStatus.RENTAL_INVALID_CATEGORY_ID);
+        }
+
+        if (!categoryRepository.existsById(categoryIdLong)) {
+            throw new GeneralException(ErrorStatus.CATEGORY_NOT_FOUND);
+        }
+
+        List<Object[]> results = rentalRepository.countByItemAndDateRange(categoryIdLong, startDateTime, endDateTime);
+        return results.stream()
+                .map(row -> new AdminItemRentalStatisticsResponse(
+                        (Long) row[0],
+                        (String) row[1],
+                        (String) row[2],
+                        (Long) row[3]
+                ))
                 .toList();
     }
 }
