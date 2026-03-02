@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,5 +45,33 @@ public interface RentalAdminApiDocs {
             @RequestParam(required = false) LocalDate endDate,
             @Parameter(name = "itemName", description = "물품명 키워드 (부분 일치)", example = "노트북")
             @RequestParam(required = false) String itemName
+    );
+
+    @Operation(
+            summary = "물품 대여 통계 조회",
+            description = "기간 내 물품 대여 횟수를 집계합니다. " +
+                    "categoryId가 'ALL'이면 카테고리별로, " +
+                    "특정 categoryId를 지정하면 해당 카테고리의 물품별로 집계합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "대여 통계 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "시작일이 종료일보다 늦음 또는 잘못된 categoryId",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "카테고리 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> getRentalItemStatistics(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(name = "categoryId", description = "'ALL' 또는 카테고리 ID", required = true, example = "ALL")
+            @RequestParam String categoryId,
+            @Parameter(name = "startDate", description = "집계 시작일 (yyyy-MM-dd)", required = true, example = "2025-01-01")
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @Parameter(name = "endDate", description = "집계 종료일 (yyyy-MM-dd)", required = true, example = "2025-12-31")
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     );
 }
