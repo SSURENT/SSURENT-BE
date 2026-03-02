@@ -16,6 +16,7 @@ import ssurent.ssurentbe.domain.item.repository.ItemRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -61,16 +62,15 @@ public class ItemCommandService {
         // categoryName == 우산 AND itemNum == 101 인 애가 있는지 검사
         // index없다면 풀스캔, 둘중 cardinalty가 높은건 itemNum,
         // itemNum -> categoryName 순서로 타게 하기(인덱스가 없다면 일단...)
-        if(itemRepository.existsByItemNumAndName(request.itemNum(), request.categoryName())){
+        Category category = categoryRepository.findByName(request.categoryName())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.CATEGORY_NOT_FOUND));
+        if(itemRepository.existsByItemNumAndCategoryIdAndDeletedFalse(request.itemNum(), category)){
             throw new GeneralException(ErrorStatus.DUPLICATE_ITEM);
         }
 
-        Category category = categoryRepository.findByName(request.categoryName())
-                .orElseThrow(() -> new GeneralException(ErrorStatus.CATEGORY_NOT_FOUND));
-
         Items item = Items.builder()
-                .name(request.categoryName())
                 .itemNum(request.itemNum())
+                .itemName(category.getName()+"("+request.itemNum()+")")
                 .categoryId(category)
                 .build();
 

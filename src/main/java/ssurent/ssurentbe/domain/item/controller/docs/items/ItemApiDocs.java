@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 
@@ -25,6 +24,5 @@ public interface ItemApiDocs
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<?>> getActiveItems(
-            UserDetails userDetails,
             Long categoryId);
 }

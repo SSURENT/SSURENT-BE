@@ -14,7 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "items")
+@Table(name = "items",
+uniqueConstraints = {
+        @UniqueConstraint(
+                name = "uk_items_category_item_num",
+                columnNames = {"category_id","item_num"}
+        )
+})
 public class Items extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +30,8 @@ public class Items extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category categoryId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name="item_name", nullable = false)
+    private String itemName;
 
     @Column(name = "item_num", nullable = false)
     private String itemNum;

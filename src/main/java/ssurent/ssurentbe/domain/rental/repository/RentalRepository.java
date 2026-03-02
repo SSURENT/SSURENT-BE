@@ -29,7 +29,7 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
             "WHERE rh.userId.id = :userId " +
             "AND (:startDate IS NULL OR rh.rentalDate >= :startDate) " +
             "AND (:endDate IS NULL OR rh.rentalDate <= :endDate) " +
-            "AND (:itemName IS NULL OR i.name LIKE %:itemName%) " +
+            "AND (:itemName IS NULL OR i.itemName LIKE %:itemName%) " +
             "ORDER BY rh.rentalDate DESC")
     List<RentalHistory> findByUserIdAndFilters(
             @Param("userId") Long userId,

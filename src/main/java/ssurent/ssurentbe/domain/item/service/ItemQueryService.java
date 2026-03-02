@@ -59,7 +59,7 @@ public class ItemQueryService {
     }
 
     public List<AdminItemNameSearchResponse> searchByName(String keyword) {
-        List<Items> items = itemRepository.findByNameStartingWith(keyword);
+        List<Items> items = itemRepository.findByItemNameStartingWithAndDeletedFalse(keyword);
 
         return items.stream()
                 .map(AdminItemNameSearchResponse::from)

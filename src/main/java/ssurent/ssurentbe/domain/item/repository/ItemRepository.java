@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ssurent.ssurentbe.domain.item.entity.Category;
 import ssurent.ssurentbe.domain.item.entity.Items;
 
 import java.util.List;
@@ -27,8 +28,7 @@ public interface ItemRepository extends JpaRepository<Items,Long> {
     @Query("SELECT i FROM Items i WHERE i.id = :id")
     Optional<Items> findByIdWithLock(@Param("id") Long id);
 
-    // Repository
-    boolean existsByItemNumAndName(String itemNum, String itemName);
+    List<Items> findByItemNameStartingWithAndDeletedFalse(String keyword);
 
-    List<Items> findByNameStartingWith(String keyword);
+    boolean existsByItemNumAndCategoryIdAndDeletedFalse(String itemNum, Category categoryId);
 }

@@ -4,8 +4,6 @@ package ssurent.ssurentbe.domain.item.controller.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
@@ -18,7 +16,6 @@ import ssurent.ssurentbe.domain.item.dto.response.ItemResponse;
 import ssurent.ssurentbe.domain.item.service.ItemCommandService;
 import ssurent.ssurentbe.domain.item.service.ItemQueryService;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -30,7 +27,6 @@ public class ItemAdminController implements ItemAdminApiDocs {
 
     @GetMapping()
     public ResponseEntity<BaseResponse<?>> getItems(
-            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) Long categoryId) {
         if (categoryId != null) {
             // 카테고리별 조회
@@ -46,7 +42,6 @@ public class ItemAdminController implements ItemAdminApiDocs {
     @PatchMapping
     @Override
     public ResponseEntity<BaseResponse<?>> updateItem(
-            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminItemUpdateRequest request) {
         List<ItemResponse> responses = itemCommandService.updateItemsStatus(request);
         return ResponseEntity.status(HttpStatus.OK)
@@ -56,7 +51,6 @@ public class ItemAdminController implements ItemAdminApiDocs {
     @Override
     @PostMapping()
     public ResponseEntity<BaseResponse<?>> createItem(
-            @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody AdminItemCreateRequest request) {
         itemCommandService.createItem(request);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -66,7 +60,6 @@ public class ItemAdminController implements ItemAdminApiDocs {
     @Override
     @GetMapping("/search")
     public ResponseEntity<BaseResponse<?>> searchItem(
-            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(required = false) String keyword) {
 
         if (keyword == null || keyword.trim().isEmpty()) {

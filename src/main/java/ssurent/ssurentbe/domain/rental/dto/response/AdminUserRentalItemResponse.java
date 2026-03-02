@@ -1,5 +1,6 @@
 package ssurent.ssurentbe.domain.rental.dto.response;
 
+import ssurent.ssurentbe.domain.item.entity.Category;
 import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 
@@ -13,12 +14,11 @@ public record AdminUserRentalItemResponse(
 ) {
     public static AdminUserRentalItemResponse from(RentalHistory rentalHistory) {
         Items items = rentalHistory.getItemId();
-        String itemName = items.getName() + "(" + items.getItemNum() + ")";
         return new AdminUserRentalItemResponse(
                 rentalHistory.getId(),
                 rentalHistory.getRentalDate(),
                 rentalHistory.getReturnDate(),
-                itemName
+                items.getItemName()
         );
     }
 }
