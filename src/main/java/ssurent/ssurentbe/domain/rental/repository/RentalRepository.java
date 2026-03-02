@@ -37,4 +37,32 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
             @Param("endDate") LocalDateTime endDate,
             @Param("itemName") String itemName
     );
+
+    // 카테고리별 집계
+    @Query("SELECT i.categoryId.id, i.categoryId.name, COUNT(rh) " +
+            "FROM RentalHistory rh " +
+            "JOIN rh.itemId i " +
+            "WHERE rh.rentalDate >= :startDate " +
+            "AND rh.rentalDate <= :endDate " +
+            "GROUP BY i.categoryId.id, i.categoryId.name " +
+            "ORDER BY COUNT(rh) DESC")
+    List<Object[]> countByCategoryAndDateRange(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
+    //항목별 집계
+    @Query("SELECT i.id, i.itemName, i.itemNum, COUNT(rh) " +
+            "FROM RentalHistory rh " +
+            "JOIN rh.itemId i " +
+            "WHERE i.categoryId.id = :categoryId " +
+            "AND rh.rentalDate >= :startDate " +
+            "AND rh.rentalDate <= :endDate " +
+            "GROUP BY i.id, i.itemName, i.itemNum " +
+            "ORDER BY COUNT(rh) DESC")
+    List<Object[]> countByItemAndDateRange(
+            @Param("categoryId") Long categoryId,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
 }
