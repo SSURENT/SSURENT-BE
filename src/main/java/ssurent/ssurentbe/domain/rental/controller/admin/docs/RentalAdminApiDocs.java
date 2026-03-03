@@ -74,4 +74,33 @@ public interface RentalAdminApiDocs {
             @Parameter(name = "endDate", description = "집계 종료일 (yyyy-MM-dd)", required = true, example = "2025-12-31")
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     );
+
+    @Operation(
+            summary = "월별 물품 대여 현황 조회",
+            description = "기간 내 월별 대여 횟수를 집계합니다. " +
+                    "categoryId가 'ALL'이면 전체 물품 대상으로, " +
+                    "특정 categoryId를 지정하면 해당 카테고리 물품만 집계합니다. " +
+                    "대여 이력이 없는 달도 rentalCount 0으로 포함됩니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "월별 대여 현황 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "시작일이 종료일보다 늦음 또는 잘못된 categoryId",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "카테고리 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> getRentalPeriodStatistics(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Parameter(name = "categoryId", description = "'ALL' 또는 카테고리 ID", required = true, example = "ALL")
+            @RequestParam String categoryId,
+            @Parameter(name = "startDate", description = "집계 시작일 (yyyy-MM-dd)", required = true, example = "2025-01-01")
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @Parameter(name = "endDate", description = "집계 종료일 (yyyy-MM-dd)", required = true, example = "2025-12-31")
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    );
 }
