@@ -26,8 +26,11 @@ public class UserController implements UserApiDocs {
 
     @Override
     @GetMapping
-    public UserInfoResponse getMyInfo(@AuthenticationPrincipal UserDetails userDetails) {
-        return userQueryService.getMyInfo(userDetails.getUsername());
+    public ResponseEntity<BaseResponse<UserInfoResponse>> getMyInfo(@AuthenticationPrincipal UserDetails userDetails) {
+        UserInfoResponse data = userQueryService.getMyInfo(userDetails.getUsername());
+        SuccessStatus status = SuccessStatus.USER_INFO_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, data));
     }
 
     @Override

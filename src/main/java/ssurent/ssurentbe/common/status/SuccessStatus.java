@@ -22,6 +22,7 @@ public enum SuccessStatus implements BaseStatus {
     /**
      * User
      */
+    USER_INFO_SUCCESS(HttpStatus.OK, "USER_200", "사용자 정보 조회 성공"),
     PHONE_NUMBER_UPDATE_SUCCESS(HttpStatus.OK, "UPDATE_204", "전화번호 변경 성공"),
 
     /**
