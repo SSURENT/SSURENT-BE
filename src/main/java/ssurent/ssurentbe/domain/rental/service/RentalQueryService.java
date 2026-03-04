@@ -137,6 +137,9 @@ public class RentalQueryService {
             LocalDate startDate,
             LocalDate endDate
     ) {
+        if (startDate == null || endDate == null) {
+                        throw new GeneralException(ErrorStatus.RENTAL_INVALID_DATE_RANGE);
+        }
         if (startDate.isAfter(endDate)) {
             throw new GeneralException(ErrorStatus.RENTAL_INVALID_DATE_RANGE);
         }
