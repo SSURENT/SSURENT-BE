@@ -32,6 +32,8 @@ public enum SuccessStatus implements BaseStatus {
     RENTAL_HISTORY_SUCCESS(HttpStatus.OK, "RENTAL_200", "유저 대여 내역 조회 성공"),
     RENTAL_EXTEND_SUCCESS(HttpStatus.OK, "RENTAL_200", "대여 기한 연장 성공"),
     RENTAL_RETURN_SUCCESS(HttpStatus.OK, "RENTAL_200", "물품 반납 성공"),
+    RENTAL_ITEM_STATISTICS_SUCCESS(HttpStatus.OK, "RENTAL_200", "물품 대여 통계 조회 성공"),
+    RENTAL_PERIOD_STATISTICS_SUCCESS(HttpStatus.OK, "RENTAL_200", "월별 물품 대여 현황 조회 성공"),
 
     /**
      *  Penalty
