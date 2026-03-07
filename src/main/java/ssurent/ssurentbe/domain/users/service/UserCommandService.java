@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssurent.ssurentbe.common.exception.GeneralException;
 import ssurent.ssurentbe.common.status.ErrorStatus;
+import ssurent.ssurentbe.domain.users.dto.request.AdminUserStatusUpdateRequest;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
@@ -23,5 +24,12 @@ public class UserCommandService {
         Users user = getUserInfo(username);
 
         user.updatePhoneNumber(phoneNum);
+    }
+
+    @Transactional
+    public void changeStatus(AdminUserStatusUpdateRequest request) {
+        Users user = userRepository.findByIdAndDeletedFalse(request.userId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+        user.updateStatus(request.status());
     }
 }

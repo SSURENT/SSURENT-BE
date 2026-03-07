@@ -1,4 +1,4 @@
-package ssurent.ssurentbe.domain.users.controller;
+package ssurent.ssurentbe.domain.users.controller.api;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
