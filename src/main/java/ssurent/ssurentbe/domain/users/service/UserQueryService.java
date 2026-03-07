@@ -58,7 +58,7 @@ public class UserQueryService {
     }
 
     public AdminUserDetailResponse getUserDetails(Long userId) {
-        Users user = userRepository.findById(userId).orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+        Users user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
         List<UserPenaltyLog> logs = userPenaltyLogRepository.findByUserIdOrderByCreatedAtDesc(user);
 
         return AdminUserDetailResponse.from(user,logs);

@@ -1,6 +1,8 @@
 package ssurent.ssurentbe.domain.users.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
@@ -52,9 +54,9 @@ public class AdminUserController implements AdminUserApiDocs {
     @Override
     @PostMapping("/penalties")
     public ResponseEntity<BaseResponse<?>> createPenalty(
-            @RequestBody AdminUserPenaltyCreateRequest request) {
+            @Valid @RequestBody AdminUserPenaltyCreateRequest request) {
         userPenaltyCommandService.createPenalty(request);
-        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_CREATE_STATUS));
+        return ResponseEntity.status(HttpStatus.CREATED).body(BaseResponse.success(SuccessStatus.COMM_CREATE_STATUS));
     }
 
     @Override
@@ -68,8 +70,8 @@ public class AdminUserController implements AdminUserApiDocs {
     @Override
     @PostMapping("/renewing")
     public ResponseEntity<BaseResponse<?>> bulkUpsertUsers(
-            @RequestBody List<AdminBulkUserUpdateRequest> requests) {
-        userPenaltyCommandService.bulkUpsertUsers(requests);
+            @Valid @RequestBody List<AdminBulkUserUpdateRequest> requests) {
+        userCommandService.bulkUpsertUsers(requests);
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
 
     }
