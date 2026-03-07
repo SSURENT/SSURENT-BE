@@ -5,12 +5,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssurent.ssurentbe.common.exception.GeneralException;
 import ssurent.ssurentbe.common.status.ErrorStatus;
+import ssurent.ssurentbe.domain.users.dto.request.AdminBulkUserUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserPenaltyCreateRequest;
 import ssurent.ssurentbe.domain.users.entity.UserPenaltyLog;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.enums.PenaltyTypes;
+import ssurent.ssurentbe.domain.users.enums.Role;
 import ssurent.ssurentbe.domain.users.repository.UserPenaltyLogRepository;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,5 +44,32 @@ public class UserPenaltyCommandService {
         UserPenaltyLog userPenaltyLog = userPenaltyLogRepository.findById(penaltyId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.PENALTY_NOT_FOUND));
         userPenaltyLogRepository.delete(userPenaltyLog);
+    }
+
+    @Transactional
+    public void bulkUpsertUsers(List<AdminBulkUserUpdateRequest> requests) {
+
+        for (AdminBulkUserUpdateRequest req : requests) {
+            Optional<Users> existing = userRepository.findByStudentNum(req.studentNum());
+
+            if (existing.isPresent()) {
+                Users user = existing.get();
+                user.updateInfo(req.name(), req.phoneNum());
+            } else {
+                Users user = Users.builder()
+                        .studentNum(req.studentNum())
+                        .name(req.name())
+                        .phoneNum(req.phoneNum())
+                        .password(
+                                req.phoneNum().isBlank()
+                                        ? req.studentNum()
+                                        : req.phoneNum()
+                        )
+                        .role(Role.NORMAL)
+                        .deleted(false)
+                        .build();
+                userRepository.save(user);
+            }
+        }
     }
 }

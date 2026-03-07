@@ -59,4 +59,9 @@ public class Users extends BaseEntity{
     public void updateStatus(Status status){
         this.status = status;
     }
+
+    public void updateInfo(String name, String phoneNum){
+        this.name = name;
+        this.phoneNum = phoneNum;
+    }
 }

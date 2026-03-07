@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import ssurent.ssurentbe.common.base.BaseResponse;
+import ssurent.ssurentbe.domain.users.dto.request.AdminBulkUserUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserPenaltyCreateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserStatusUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.response.AdminUserDetailResponse;
@@ -64,4 +65,13 @@ public interface AdminUserApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<?>> deletePenalty(Long penaltyId);
+
+    @Operation(summary = "일괄 사용자 최신화", description = "사용자 데이터를 일괄 최신화 합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "입력 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> bulkUpsertUsers(List<AdminBulkUserUpdateRequest> requests);
 }

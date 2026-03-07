@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.users.controller.docs.AdminUserApiDocs;
+import ssurent.ssurentbe.domain.users.dto.request.AdminBulkUserUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserPenaltyCreateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserStatusUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.response.AdminUserDetailResponse;
@@ -62,5 +63,14 @@ public class AdminUserController implements AdminUserApiDocs {
             @PathVariable Long penaltyId) {
         userPenaltyCommandService.deletePenalty(penaltyId);
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+    }
+
+    @Override
+    @PostMapping("/renewing")
+    public ResponseEntity<BaseResponse<?>> bulkUpsertUsers(
+            @RequestBody List<AdminBulkUserUpdateRequest> requests) {
+        userPenaltyCommandService.bulkUpsertUsers(requests);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.COMM_SUCCESS_STATUS));
+
     }
 }
