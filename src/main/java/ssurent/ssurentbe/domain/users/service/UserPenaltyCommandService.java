@@ -49,27 +49,32 @@ public class UserPenaltyCommandService {
     @Transactional
     public void bulkUpsertUsers(List<AdminBulkUserUpdateRequest> requests) {
 
-        for (AdminBulkUserUpdateRequest req : requests) {
-            Optional<Users> existing = userRepository.findByStudentNum(req.studentNum());
+        try{
+            for (AdminBulkUserUpdateRequest req : requests) {
+                Optional<Users> existing = userRepository.findByStudentNum(req.studentNum());
 
-            if (existing.isPresent()) {
-                Users user = existing.get();
-                user.updateInfo(req.name(), req.phoneNum());
-            } else {
-                Users user = Users.builder()
-                        .studentNum(req.studentNum())
-                        .name(req.name())
-                        .phoneNum(req.phoneNum())
-                        .password(
-                                req.phoneNum().isBlank()
-                                        ? req.studentNum()
-                                        : req.phoneNum()
-                        )
-                        .role(Role.NORMAL)
-                        .deleted(false)
-                        .build();
-                userRepository.save(user);
+                if (existing.isPresent()) {
+                    Users user = existing.get();
+                    user.updateInfo(req.name(), req.phoneNum());
+                } else {
+                    Users user = Users.builder()
+                            .studentNum(req.studentNum())
+                            .name(req.name())
+                            .phoneNum(req.phoneNum())
+                            .password(
+                                    req.phoneNum().isBlank()
+                                            ? req.studentNum()
+                                            : req.phoneNum()
+                            )
+                            .role(Role.NORMAL)
+                            .deleted(false)
+                            .build();
+                    userRepository.save(user);
+                }
             }
+        }
+        catch (Exception e){
+            throw new GeneralException(ErrorStatus.USER_UPSERT_FAILED);
         }
     }
 }
