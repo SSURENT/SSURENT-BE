@@ -56,4 +56,7 @@ public class Users extends BaseEntity{
         this.phoneNum = phoneNum;
     }
 
+    public void updateStatus(Status status){
+        this.status = status;
+    }
 }

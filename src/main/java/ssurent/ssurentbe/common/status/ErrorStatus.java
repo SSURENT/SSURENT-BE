@@ -56,6 +56,11 @@ public enum ErrorStatus implements BaseStatus {
     ASSIST_NOT_FOUND(HttpStatus.NOT_FOUND, "ASSIST_404", "도우미를 찾을 수 없습니다."),
 
     /**
+     * Penalty
+     */
+    PENALTY_NOT_FOUND(HttpStatus.NOT_FOUND, "PENALTY_404", "징계 이력을 찾을 수 없습니다."),
+
+    /**
      * Rental
      */
     RENTAL_INVALID_DATE_RANGE(HttpStatus.BAD_REQUEST, "RENTAL_400", "시작일이 종료일보다 늦을 수 없습니다"),

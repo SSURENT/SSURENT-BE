@@ -8,18 +8,14 @@ import java.time.LocalDateTime;
 public record UserPenaltyResponse(
         Long penaltyId,
         PenaltyTypes penaltyType,
-        Long itemId,
         String itemName,
-        Long rentalHistoryId,
         LocalDateTime createdAt
 ) {
     public static UserPenaltyResponse from(UserPenaltyLog log) {
         return new UserPenaltyResponse(
                 log.getId(),
                 log.getPenaltyType(),
-                log.getItemsId() != null ? log.getItemsId().getId() : null,
-                log.getItemsId() != null ? log.getItemsId().getCategoryId().getName() : null,
-                log.getRentalHistoryId() != null ? log.getRentalHistoryId().getId() : null,
+                log.getItemName(),
                 log.getCreatedAt()
         );
     }
