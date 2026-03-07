@@ -10,6 +10,7 @@ import ssurent.ssurentbe.domain.users.dto.request.AdminBulkUserUpdateRequest;
 import ssurent.ssurentbe.domain.users.dto.request.AdminUserStatusUpdateRequest;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.enums.Role;
+import ssurent.ssurentbe.domain.users.enums.Status;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public class UserCommandService {
                                             : req.phoneNum())
                             )
                             .role(Role.NORMAL)
+                            .status(Status.ACTIVE)
                             .deleted(false)
                             .build();
                     userRepository.save(user);

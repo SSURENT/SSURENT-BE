@@ -56,6 +56,7 @@ public class Users extends BaseEntity{
     //회원 복구
     public void restore(){
         this.deleted = false;
+        this.deletedAt = null;
     }
 
     public void updatePhoneNumber(String phoneNum) {
