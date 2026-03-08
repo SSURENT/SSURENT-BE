@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportCheckRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
@@ -88,6 +89,17 @@ public interface RentalApiDocs {
             @RequestBody RentalReturnRequest request
     );
 
+    @Operation(summary = "미해결 문제 신고 목록 조회", description = "해결되지 않은 문제 신고 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "미해결 문제 신고 목록 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> getUnresolvedReports(
+            @AuthenticationPrincipal UserDetails userDetails
+    );
+
     @Operation(summary = "미해결 문제 신고 건수 조회", description = "해결되지 않은 문제 신고 건수를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "미해결 문제 신고 건수 조회 성공",
@@ -97,6 +109,22 @@ public interface RentalApiDocs {
     })
     ResponseEntity<BaseResponse<?>> getUnresolvedReportCount(
             @AuthenticationPrincipal UserDetails userDetails
+    );
+
+    @Operation(summary = "문제 신고 해결 처리", description = "문제 신고 건들을 해결 처리합니다. 여러 건을 한 번에 처리할 수 있습니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "문제 해결 처리 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 신고 ID 포함",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> checkReports(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody RentalReportCheckRequest request
     );
 
     @Operation(summary = "물품 문제 신고", description = "대여 중인 물품의 문제를 신고합니다. 문제 유형: DAMAGE(파손), LOSS(분실), MALFUNCTION(기능불량), OTHER(기타). OTHER 선택 시 description 필수. 신고 후 반납 처리는 되지 않습니다.")

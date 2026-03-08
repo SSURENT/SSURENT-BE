@@ -11,6 +11,7 @@ import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.rental.controller.docs.RentalApiDocs;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportCheckRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
@@ -70,6 +71,17 @@ public class RentalController implements RentalApiDocs {
 
     @Override
     @GetMapping("/report")
+    public ResponseEntity<BaseResponse<?>> getUnresolvedReports(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return ResponseEntity.ok(BaseResponse.success(
+                SuccessStatus.RENTAL_REPORT_LIST_SUCCESS,
+                rentalQueryService.getUnresolvedReports()
+        ));
+    }
+
+    @Override
+    @GetMapping("/report/count")
     public ResponseEntity<BaseResponse<?>> getUnresolvedReportCount(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
@@ -77,6 +89,16 @@ public class RentalController implements RentalApiDocs {
                 SuccessStatus.RENTAL_REPORT_COUNT_SUCCESS,
                 rentalQueryService.getUnresolvedReportCount()
         ));
+    }
+
+    @Override
+    @PatchMapping("/report/check")
+    public ResponseEntity<BaseResponse<?>> checkReports(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalReportCheckRequest request
+    ) {
+        rentalCommandService.checkReports(request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_REPORT_CHECK_SUCCESS, null));
     }
 
     @Override
