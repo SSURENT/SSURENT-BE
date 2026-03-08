@@ -69,6 +69,17 @@ public class RentalController implements RentalApiDocs {
     }
 
     @Override
+    @GetMapping("/report")
+    public ResponseEntity<BaseResponse<?>> getUnresolvedReportCount(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return ResponseEntity.ok(BaseResponse.success(
+                SuccessStatus.RENTAL_REPORT_COUNT_SUCCESS,
+                rentalQueryService.getUnresolvedReportCount()
+        ));
+    }
+
+    @Override
     @PostMapping("/report")
     public ResponseEntity<BaseResponse<?>> reportRental(
             @AuthenticationPrincipal UserDetails userDetails,

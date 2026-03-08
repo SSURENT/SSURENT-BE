@@ -88,6 +88,17 @@ public interface RentalApiDocs {
             @RequestBody RentalReturnRequest request
     );
 
+    @Operation(summary = "미해결 문제 신고 건수 조회", description = "해결되지 않은 문제 신고 건수를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "미해결 문제 신고 건수 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<?>> getUnresolvedReportCount(
+            @AuthenticationPrincipal UserDetails userDetails
+    );
+
     @Operation(summary = "물품 문제 신고", description = "대여 중인 물품의 문제를 신고합니다. 문제 유형: DAMAGE(파손), LOSS(분실), MALFUNCTION(기능불량), OTHER(기타). OTHER 선택 시 description 필수. 신고 후 반납 처리는 되지 않습니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "문제 신고 접수 성공",
