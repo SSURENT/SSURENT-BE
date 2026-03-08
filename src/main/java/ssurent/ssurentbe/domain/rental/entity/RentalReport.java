@@ -33,6 +33,10 @@ public class RentalReport extends BaseEntity {
     @Column(name = "reported_at", nullable = false)
     private LocalDateTime reportedAt;
 
+    @Builder.Default
+    @Column(name = "is_resolved", nullable = false)
+    private boolean resolved = false;
+
     public static RentalReport of(RentalHistory rentalHistory, ProblemType problemType, String description) {
         return RentalReport.builder()
                 .rentalHistory(rentalHistory)
