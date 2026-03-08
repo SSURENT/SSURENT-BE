@@ -11,8 +11,10 @@ import ssurent.ssurentbe.domain.rental.dto.response.AdminItemRentalStatisticsRes
 import ssurent.ssurentbe.domain.rental.dto.response.AdminPeriodRentalStatisticsResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
+import ssurent.ssurentbe.domain.rental.dto.response.UnresolvedReportCountResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 import ssurent.ssurentbe.domain.rental.enums.Status;
+import ssurent.ssurentbe.domain.rental.repository.RentalReportRepository;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
@@ -34,6 +36,11 @@ public class RentalQueryService {
     private final UserRepository userRepository;
     private final RentalRepository rentalRepository;
     private final CategoryRepository categoryRepository;
+    private final RentalReportRepository rentalReportRepository;
+
+    public UnresolvedReportCountResponse getUnresolvedReportCount() {
+        return new UnresolvedReportCountResponse(rentalReportRepository.countByResolvedFalse());
+    }
 
     public List<RentalItemResponse> getMyRentals(String studentNum) {
         Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
