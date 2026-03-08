@@ -17,7 +17,7 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
-    operations-sorter: method
+    tags-sorter: alpha
 
 # JWT
 jwt:
