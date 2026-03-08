@@ -12,6 +12,7 @@ import ssurent.ssurentbe.domain.rental.dto.response.AdminPeriodRentalStatisticsR
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.UnresolvedReportCountResponse;
+import ssurent.ssurentbe.domain.rental.dto.response.UnresolvedReportResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
 import ssurent.ssurentbe.domain.rental.enums.Status;
 import ssurent.ssurentbe.domain.rental.repository.RentalReportRepository;
@@ -37,6 +38,12 @@ public class RentalQueryService {
     private final RentalRepository rentalRepository;
     private final CategoryRepository categoryRepository;
     private final RentalReportRepository rentalReportRepository;
+
+    public List<UnresolvedReportResponse> getUnresolvedReports() {
+        return rentalReportRepository.findAllByResolvedFalse().stream()
+                .map(UnresolvedReportResponse::from)
+                .toList();
+    }
 
     public UnresolvedReportCountResponse getUnresolvedReportCount() {
         return new UnresolvedReportCountResponse(rentalReportRepository.countByResolvedFalse());
