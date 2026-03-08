@@ -12,8 +12,9 @@ import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
-import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportCheckRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
@@ -25,6 +26,8 @@ import static ssurent.ssurentbe.domain.rental.enums.Status.RENT;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -136,5 +139,16 @@ public class RentalCommandService {
         }
 
         rentalReportRepository.save(RentalReport.of(rentalHistory, request.problemType(), request.description()));
+    }
+
+    @Transactional
+    public void checkReports(RentalReportCheckRequest request) {
+        List<RentalReport> reports = rentalReportRepository.findAllById(request.reportIds());
+
+        if (reports.size() != request.reportIds().size()) {
+            throw new GeneralException(ErrorStatus.RENTAL_REPORT_NOT_FOUND);
+        }
+
+        reports.forEach(RentalReport::resolve);
     }
 }
