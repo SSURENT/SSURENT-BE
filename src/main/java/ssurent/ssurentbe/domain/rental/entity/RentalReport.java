@@ -37,6 +37,10 @@ public class RentalReport extends BaseEntity {
     @Column(name = "is_resolved", nullable = false)
     private boolean resolved = false;
 
+    public void resolve() {
+        this.resolved = true;
+    }
+
     public static RentalReport of(RentalHistory rentalHistory, ProblemType problemType, String description) {
         return RentalReport.builder()
                 .rentalHistory(rentalHistory)
