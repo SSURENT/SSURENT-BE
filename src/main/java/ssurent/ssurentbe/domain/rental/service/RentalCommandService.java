@@ -13,9 +13,13 @@ import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
+import ssurent.ssurentbe.domain.rental.entity.RentalReport;
+import ssurent.ssurentbe.domain.rental.enums.ProblemType;
+import ssurent.ssurentbe.domain.rental.repository.RentalReportRepository;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RENT;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
@@ -30,6 +34,7 @@ public class RentalCommandService {
     private final AssistsRepository assistsRepository;
     private final UserRepository userRepository;
     private final RentalRepository rentalRepository;
+    private final RentalReportRepository rentalReportRepository;
 
     @Transactional
     public RentalItemResponse createRental(String studentNum, RentalRequest request) {
@@ -107,5 +112,29 @@ public class RentalCommandService {
         Items item = rentalHistory.getItemId();
         item.updateStatus(Status.ACTIVE);
         item.updateCondition(Condition.KEEP);
+    }
+
+    @Transactional
+    public void reportRental(String studentNum, RentalReportRequest request) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        RentalHistory rentalHistory = rentalRepository.findById(request.rentalId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.RENTAL_HISTORY_NOT_FOUND));
+
+        if (!rentalHistory.getUserId().getId().equals(user.getId())) {
+            throw new GeneralException(ErrorStatus.FORBIDDEN);
+        }
+
+        if (rentalHistory.getStatus() == RETURN) {
+            throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
+        }
+
+        if (request.problemType() == ProblemType.OTHER &&
+                (request.description() == null || request.description().isBlank())) {
+            throw new GeneralException(ErrorStatus.RENTAL_REPORT_DESCRIPTION_REQUIRED);
+        }
+
+        rentalReportRepository.save(RentalReport.of(rentalHistory, request.problemType(), request.description()));
     }
 }
