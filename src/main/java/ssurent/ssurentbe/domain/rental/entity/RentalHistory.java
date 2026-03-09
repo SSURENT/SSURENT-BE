@@ -60,4 +60,8 @@ public class RentalHistory extends BaseEntity {
         this.returnDate = LocalDateTime.now();
         this.status = ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
     }
+
+    public void updateAssist(Assists assist) {
+        this.assistId = assist;
+    }
 }
