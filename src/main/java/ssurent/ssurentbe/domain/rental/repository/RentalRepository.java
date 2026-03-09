@@ -38,6 +38,18 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
             @Param("itemName") String itemName
     );
 
+    @Query("SELECT rh FROM RentalHistory rh " +
+            "JOIN FETCH rh.userId u " +
+            "JOIN FETCH rh.itemId i " +
+            "JOIN FETCH i.categoryId " +
+            "WHERE rh.rentalDate >= :startDate " +
+            "AND rh.rentalDate <= :endDate " +
+            "ORDER BY rh.rentalDate ASC")
+    List<RentalHistory> findAllByDateRange(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
+
     // 카테고리별 집계 (대여 이력 없는 카테고리도 포함)
     @Query("SELECT c.id, c.name, COUNT(rh.id) " +
             "FROM Category c " +
