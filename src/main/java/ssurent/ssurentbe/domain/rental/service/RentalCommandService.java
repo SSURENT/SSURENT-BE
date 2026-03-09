@@ -112,6 +112,10 @@ public class RentalCommandService {
             throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
         }
 
+        Assists returnAssist = assistsRepository.findByNameAndDeletedFalse(request.assistName())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.ASSIST_NOT_FOUND));
+
+        rentalHistory.updateReturnAssist(returnAssist);
         rentalHistory.returnRental();
 
         Items item = rentalHistory.getItemId();
@@ -162,7 +166,7 @@ public class RentalCommandService {
                                 .build()
                 ));
 
-        rentalHistory.updateAssist(superAdminAssist);
+        rentalHistory.updateReturnAssist(superAdminAssist);
         rentalHistory.returnRental();
 
         Items item = rentalHistory.getItemId();

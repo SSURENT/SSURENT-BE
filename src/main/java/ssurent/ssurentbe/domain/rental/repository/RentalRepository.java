@@ -42,6 +42,8 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
             "JOIN FETCH rh.userId u " +
             "JOIN FETCH rh.itemId i " +
             "JOIN FETCH i.categoryId " +
+            "JOIN FETCH rh.assistId " +
+            "LEFT JOIN FETCH rh.returnAssistId " +
             "WHERE rh.rentalDate >= :startDate " +
             "AND rh.rentalDate <= :endDate " +
             "ORDER BY rh.rentalDate ASC")

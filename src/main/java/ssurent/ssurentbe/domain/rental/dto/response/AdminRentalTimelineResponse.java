@@ -18,7 +18,8 @@ public record AdminRentalTimelineResponse(
         String itemName,
         LocalDateTime eventTime,
         String itemNum,
-        RentalItemCondition itemCondition
+        RentalItemCondition itemCondition,
+        String assistName
 ) {
     public static AdminRentalTimelineResponse ofRent(RentalHistory rh, RentalItemCondition condition) {
         Users user = rh.getUserId();
@@ -32,7 +33,8 @@ public record AdminRentalTimelineResponse(
                 item.getItemName(),
                 rh.getRentalDate(),
                 item.getItemNum(),
-                condition
+                condition,
+                rh.getAssistId() != null ? rh.getAssistId().getName() : null
         );
     }
 
@@ -48,7 +50,8 @@ public record AdminRentalTimelineResponse(
                 item.getItemName(),
                 rh.getReturnDate(),
                 item.getItemNum(),
-                condition
+                condition,
+                rh.getReturnAssistId() != null ? rh.getReturnAssistId().getName() : null
         );
     }
 
