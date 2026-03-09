@@ -11,6 +11,8 @@ import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.rental.controller.docs.RentalApiDocs;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportCheckRequest;
+import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
@@ -65,5 +67,48 @@ public class RentalController implements RentalApiDocs {
     ) {
         rentalCommandService.returnRental(userDetails.getUsername(), request);
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_RETURN_SUCCESS, null));
+    }
+
+    @Override
+    @GetMapping("/report")
+    public ResponseEntity<BaseResponse<?>> getUnresolvedReports(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return ResponseEntity.ok(BaseResponse.success(
+                SuccessStatus.RENTAL_REPORT_LIST_SUCCESS,
+                rentalQueryService.getUnresolvedReports()
+        ));
+    }
+
+    @Override
+    @GetMapping("/report/count")
+    public ResponseEntity<BaseResponse<?>> getUnresolvedReportCount(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return ResponseEntity.ok(BaseResponse.success(
+                SuccessStatus.RENTAL_REPORT_COUNT_SUCCESS,
+                rentalQueryService.getUnresolvedReportCount()
+        ));
+    }
+
+    @Override
+    @PatchMapping("/report/check")
+    public ResponseEntity<BaseResponse<?>> checkReports(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalReportCheckRequest request
+    ) {
+        rentalCommandService.checkReports(userDetails.getUsername(), request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_REPORT_CHECK_SUCCESS, null));
+    }
+
+    @Override
+    @PostMapping("/report")
+    public ResponseEntity<BaseResponse<?>> reportRental(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody RentalReportRequest request
+    ) {
+        rentalCommandService.reportRental(userDetails.getUsername(), request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(BaseResponse.success(SuccessStatus.RENTAL_REPORT_SUCCESS, null));
     }
 }

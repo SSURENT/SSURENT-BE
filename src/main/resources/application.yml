@@ -17,9 +17,9 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
-    operations-sorter: method
+    tags-sorter: alpha
 
 # JWT
 jwt:
-  access-token-validity: 60000
+  access-token-validity: 3600000
   refresh-token-validity: 604800000

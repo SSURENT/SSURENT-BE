@@ -62,7 +62,9 @@ public enum ErrorStatus implements BaseStatus {
     RENTAL_HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND,"RENTAL_404", "대여 내역이 없습니다"),
     RENTAL_ALREADY_EXTENDED(HttpStatus.CONFLICT, "RENTAL_409", "이미 연장된 대여입니다."),
     RENTAL_ALREADY_RETURNED(HttpStatus.CONFLICT, "RENTAL_409", "이미 반납된 대여입니다."),
-    RENTAL_INVALID_CATEGORY_ID(HttpStatus.BAD_REQUEST, "RENTAL_400", "잘못된 categoryId 형식입니다");
+    RENTAL_INVALID_CATEGORY_ID(HttpStatus.BAD_REQUEST, "RENTAL_400", "잘못된 categoryId 형식입니다"),
+    RENTAL_REPORT_DESCRIPTION_REQUIRED(HttpStatus.BAD_REQUEST, "RENTAL_400", "기타 유형 신고 시 상세 내용을 입력해야 합니다."),
+    RENTAL_REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "RENTAL_404", "존재하지 않는 문제 신고입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
