@@ -51,9 +51,19 @@ public enum ErrorStatus implements BaseStatus {
     ITEM_NOT_AVAILABLE(HttpStatus.CONFLICT, "ITEM_409", "이미 대여 중인 물품입니다."),
 
     /**
+     * Users
+     */
+    USER_UPSERT_FAILED(HttpStatus.BAD_REQUEST, "USER_400", "유저 일괄 업데이트에 실패했습니다."),
+
+    /**
      * Assists
      */
     ASSIST_NOT_FOUND(HttpStatus.NOT_FOUND, "ASSIST_404", "도우미를 찾을 수 없습니다."),
+
+    /**
+     * Penalty
+     */
+    PENALTY_NOT_FOUND(HttpStatus.NOT_FOUND, "PENALTY_404", "징계 이력을 찾을 수 없습니다."),
 
     /**
      * Rental

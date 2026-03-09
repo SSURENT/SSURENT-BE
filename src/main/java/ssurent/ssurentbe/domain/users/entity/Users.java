@@ -52,8 +52,23 @@ public class Users extends BaseEntity{
         this.phoneNum = null;
         this.studentNum = null;
     }
+
+    //회원 복구
+    public void restore(){
+        this.deleted = false;
+        this.deletedAt = null;
+    }
+
     public void updatePhoneNumber(String phoneNum) {
         this.phoneNum = phoneNum;
     }
 
+    public void updateStatus(Status status){
+        this.status = status;
+    }
+
+    public void updateInfo(String name, String phoneNum){
+        this.name = name;
+        this.phoneNum = phoneNum;
+    }
 }
