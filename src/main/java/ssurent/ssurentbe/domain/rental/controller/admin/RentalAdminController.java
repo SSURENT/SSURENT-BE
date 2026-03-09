@@ -1,19 +1,19 @@
 package ssurent.ssurentbe.domain.rental.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.domain.rental.controller.admin.docs.RentalAdminApiDocs;
+import ssurent.ssurentbe.domain.rental.dto.request.AdminRentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminPeriodRentalStatisticsResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
+import ssurent.ssurentbe.domain.rental.service.RentalCommandService;
 import ssurent.ssurentbe.domain.rental.service.RentalQueryService;
 
 import java.time.LocalDate;
@@ -25,6 +25,30 @@ import java.util.List;
 public class RentalAdminController implements RentalAdminApiDocs {
 
     private final RentalQueryService rentalQueryService;
+    private final RentalCommandService rentalCommandService;
+
+    @Override
+    @GetMapping
+    public ResponseEntity<BaseResponse<?>> getAllRentalTimeline(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        return ResponseEntity.ok(BaseResponse.success(
+                SuccessStatus.ADMIN_RENTAL_TIMELINE_SUCCESS,
+                rentalQueryService.getAllRentalTimeline(startDate, endDate)
+        ));
+    }
+
+    @Override
+    @PatchMapping
+    public ResponseEntity<BaseResponse<?>> adminForceReturn(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody AdminRentalReturnRequest request
+    ) {
+        rentalCommandService.adminForceReturn(request);
+        return ResponseEntity.ok(BaseResponse.success(SuccessStatus.ADMIN_RENTAL_FORCE_RETURN_SUCCESS, null));
+    }
 
     @Override
     @GetMapping("/user")
