@@ -27,7 +27,7 @@ public class RentalAdminController implements RentalAdminApiDocs {
     private final RentalQueryService rentalQueryService;
 
     @Override
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<BaseResponse<?>> getUserRentalHistory(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("userId") Long userId,
