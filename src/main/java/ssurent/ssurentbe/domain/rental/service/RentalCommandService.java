@@ -25,6 +25,7 @@ import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RENT;
 import static ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
 import ssurent.ssurentbe.domain.users.entity.Users;
+import ssurent.ssurentbe.domain.users.enums.Role;
 import ssurent.ssurentbe.domain.users.repository.UserRepository;
 
 import java.util.List;
@@ -142,7 +143,14 @@ public class RentalCommandService {
     }
 
     @Transactional
-    public void checkReports(RentalReportCheckRequest request) {
+    public void checkReports(String studentNum, RentalReportCheckRequest request) {
+        Users user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+        if (user.getRole() != Role.ADMIN && user.getRole() != Role.SUPERADMIN) {
+            throw new GeneralException(ErrorStatus.FORBIDDEN);
+        }
+
         List<RentalReport> reports = rentalReportRepository.findAllById(request.reportIds());
 
         if (reports.size() != request.reportIds().size()) {

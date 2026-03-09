@@ -97,7 +97,7 @@ public class RentalController implements RentalApiDocs {
             @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody RentalReportCheckRequest request
     ) {
-        rentalCommandService.checkReports(request);
+        rentalCommandService.checkReports(userDetails.getUsername(), request);
         return ResponseEntity.ok(BaseResponse.success(SuccessStatus.RENTAL_REPORT_CHECK_SUCCESS, null));
     }
 
