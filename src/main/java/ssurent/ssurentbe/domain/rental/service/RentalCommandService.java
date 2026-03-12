@@ -159,12 +159,7 @@ public class RentalCommandService {
         }
 
         Assists superAdminAssist = assistsRepository.findByNameAndDeletedFalse(SUPERADMIN_ASSIST_NAME)
-                .orElseGet(() -> assistsRepository.save(
-                        Assists.builder()
-                                .name(SUPERADMIN_ASSIST_NAME)
-                                .deleted(false)
-                                .build()
-                ));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.ASSIST_NOT_FOUND));
 
         rentalHistory.updateReturnAssist(superAdminAssist);
         rentalHistory.returnRental();
