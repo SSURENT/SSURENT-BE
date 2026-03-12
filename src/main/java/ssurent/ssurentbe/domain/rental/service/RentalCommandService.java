@@ -11,6 +11,7 @@ import ssurent.ssurentbe.domain.item.entity.Items;
 import ssurent.ssurentbe.domain.item.enums.Condition;
 import ssurent.ssurentbe.domain.item.enums.Status;
 import ssurent.ssurentbe.domain.item.repository.ItemRepository;
+import ssurent.ssurentbe.domain.rental.dto.request.AdminRentalReturnRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalExtendRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReportCheckRequest;
 import ssurent.ssurentbe.domain.rental.dto.request.RentalReportRequest;
@@ -111,6 +112,10 @@ public class RentalCommandService {
             throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
         }
 
+        Assists returnAssist = assistsRepository.findByNameAndDeletedFalse(request.assistName())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.ASSIST_NOT_FOUND));
+
+        rentalHistory.updateReturnAssist(returnAssist);
         rentalHistory.returnRental();
 
         Items item = rentalHistory.getItemId();
@@ -140,6 +145,28 @@ public class RentalCommandService {
         }
 
         rentalReportRepository.save(RentalReport.of(rentalHistory, request.problemType(), request.description()));
+    }
+
+    private static final String SUPERADMIN_ASSIST_NAME = "최고관리자";
+
+    @Transactional
+    public void adminForceReturn(AdminRentalReturnRequest request) {
+        RentalHistory rentalHistory = rentalRepository.findById(request.rentalId())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.RENTAL_HISTORY_NOT_FOUND));
+
+        if (rentalHistory.getStatus() == RETURN) {
+            throw new GeneralException(ErrorStatus.RENTAL_ALREADY_RETURNED);
+        }
+
+        Assists superAdminAssist = assistsRepository.findByNameAndDeletedFalse(SUPERADMIN_ASSIST_NAME)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.ASSIST_NOT_FOUND));
+
+        rentalHistory.updateReturnAssist(superAdminAssist);
+        rentalHistory.returnRental();
+
+        Items item = rentalHistory.getItemId();
+        item.updateStatus(Status.ACTIVE);
+        item.updateCondition(Condition.KEEP);
     }
 
     @Transactional

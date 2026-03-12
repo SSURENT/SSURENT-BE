@@ -39,6 +39,8 @@ public enum SuccessStatus implements BaseStatus {
     RENTAL_REPORT_LIST_SUCCESS(HttpStatus.OK, "RENTAL_200", "미해결 문제 신고 목록 조회 성공"),
     RENTAL_REPORT_COUNT_SUCCESS(HttpStatus.OK, "RENTAL_200", "미해결 문제 신고 건수 조회 성공"),
     RENTAL_REPORT_CHECK_SUCCESS(HttpStatus.OK, "RENTAL_200", "문제 해결 처리 성공"),
+    ADMIN_RENTAL_TIMELINE_SUCCESS(HttpStatus.OK, "RENTAL_200", "전체 대여 타임라인 조회 성공"),
+    ADMIN_RENTAL_FORCE_RETURN_SUCCESS(HttpStatus.OK, "RENTAL_200", "강제 반납 처리 성공"),
 
     /**
      *  Penalty

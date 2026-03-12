@@ -9,11 +9,13 @@ import ssurent.ssurentbe.domain.item.repository.CategoryRepository;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminCategoryRentalStatisticsResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminItemRentalStatisticsResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminPeriodRentalStatisticsResponse;
+import ssurent.ssurentbe.domain.rental.dto.response.AdminRentalTimelineResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.AdminUserRentalHistoryResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.RentalItemResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.UnresolvedReportCountResponse;
 import ssurent.ssurentbe.domain.rental.dto.response.UnresolvedReportResponse;
 import ssurent.ssurentbe.domain.rental.entity.RentalHistory;
+import ssurent.ssurentbe.domain.rental.enums.RentalItemCondition;
 import ssurent.ssurentbe.domain.rental.enums.Status;
 import ssurent.ssurentbe.domain.rental.repository.RentalReportRepository;
 import ssurent.ssurentbe.domain.rental.repository.RentalRepository;
@@ -25,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,6 +65,32 @@ public class RentalQueryService {
         return histories.stream()
                 .map(RentalItemResponse::from)
                 .toList();
+    }
+
+    public List<AdminRentalTimelineResponse> getAllRentalTimeline(LocalDate startDate, LocalDate endDate) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
+            throw new GeneralException(ErrorStatus.RENTAL_INVALID_DATE_RANGE);
+        }
+
+        LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : LocalDateTime.of(2000, 1, 1, 0, 0);
+        LocalDateTime endDateTime = (endDate != null) ? endDate.atTime(LocalTime.MAX) : LocalDateTime.now();
+
+        List<RentalHistory> histories = rentalRepository.findAllByDateRange(startDateTime, endDateTime);
+
+        List<AdminRentalTimelineResponse> timeline = new ArrayList<>();
+        for (RentalHistory rh : histories) {
+            RentalItemCondition condition = AdminRentalTimelineResponse.resolveCondition(rh);
+            if (!rh.getRentalDate().isBefore(startDateTime) && !rh.getRentalDate().isAfter(endDateTime)) {
+                timeline.add(AdminRentalTimelineResponse.ofRent(rh, condition));
+            }
+            if (condition != RentalItemCondition.UNRETURNED
+                    && !rh.getReturnDate().isBefore(startDateTime) && !rh.getReturnDate().isAfter(endDateTime)) {
+                timeline.add(AdminRentalTimelineResponse.ofReturn(rh, condition));
+            }
+        }
+
+        timeline.sort(Comparator.comparing(AdminRentalTimelineResponse::eventTime));
+        return timeline;
     }
 
     public List<AdminUserRentalHistoryResponse> getUserRentalHistory(

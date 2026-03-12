@@ -26,6 +26,10 @@ public class RentalHistory extends BaseEntity {
     private Assists assistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "return_assist_id")
+    private Assists returnAssistId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users userId;
 
@@ -59,5 +63,9 @@ public class RentalHistory extends BaseEntity {
     public void returnRental() {
         this.returnDate = LocalDateTime.now();
         this.status = ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
+    }
+
+    public void updateReturnAssist(Assists assist) {
+        this.returnAssistId = assist;
     }
 }
