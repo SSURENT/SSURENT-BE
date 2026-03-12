@@ -44,8 +44,8 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
             "JOIN FETCH i.categoryId " +
             "JOIN FETCH rh.assistId " +
             "LEFT JOIN FETCH rh.returnAssistId " +
-            "WHERE rh.rentalDate >= :startDate " +
-            "AND rh.rentalDate <= :endDate " +
+            "WHERE (rh.rentalDate >= :startDate AND rh.rentalDate <= :endDate) " +
+            "OR (rh.returnDate >= :startDate AND rh.returnDate <= :endDate) " +
             "ORDER BY rh.rentalDate ASC")
     List<RentalHistory> findAllByDateRange(
             @Param("startDate") LocalDateTime startDate,

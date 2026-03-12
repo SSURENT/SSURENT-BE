@@ -80,8 +80,11 @@ public class RentalQueryService {
         List<AdminRentalTimelineResponse> timeline = new ArrayList<>();
         for (RentalHistory rh : histories) {
             RentalItemCondition condition = AdminRentalTimelineResponse.resolveCondition(rh);
-            timeline.add(AdminRentalTimelineResponse.ofRent(rh, condition));
-            if (condition != RentalItemCondition.UNRETURNED) {
+            if (!rh.getRentalDate().isBefore(startDateTime) && !rh.getRentalDate().isAfter(endDateTime)) {
+                timeline.add(AdminRentalTimelineResponse.ofRent(rh, condition));
+            }
+            if (condition != RentalItemCondition.UNRETURNED
+                    && !rh.getReturnDate().isBefore(startDateTime) && !rh.getReturnDate().isAfter(endDateTime)) {
                 timeline.add(AdminRentalTimelineResponse.ofReturn(rh, condition));
             }
         }
