@@ -85,8 +85,11 @@ public class AuthController implements AuthApiDocs {
 
     @Override
     @PatchMapping("/password/reset")
-    public ResponseEntity<BaseResponse<Void>> resetPassword(@RequestBody PasswordResetRequest request) {
-        authService.resetPassword(request);
+    public ResponseEntity<BaseResponse<Void>> resetPassword(
+            @RequestBody PasswordResetRequest request,
+            Authentication authentication) {
+        String studentNum = authentication != null ? authentication.getName() : null;
+        authService.resetPassword(request, studentNum);
         SuccessStatus status = SuccessStatus.PASSWORD_RESET_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
                 .body(BaseResponse.success(status));

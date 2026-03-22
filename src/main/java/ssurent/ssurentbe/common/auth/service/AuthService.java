@@ -182,17 +182,25 @@ public class AuthService {
     }
 
     @Transactional
-    public void resetPassword(PasswordResetRequest request) {
-        String phoneNum = redisTemplate.opsForValue().get(SMS_RESET_PREFIX + request.resetToken());
-        if (phoneNum == null) {
-            throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
+    public void resetPassword(PasswordResetRequest request, String studentNum) {
+        Users user;
+
+        if (studentNum != null) {
+            user = userRepository.findByStudentNumAndDeletedFalse(studentNum)
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+        } else {
+            if (request.resetToken() == null) {
+                throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
+            }
+            String phoneNum = redisTemplate.opsForValue().get(SMS_RESET_PREFIX + request.resetToken());
+            if (phoneNum == null) {
+                throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
+            }
+            user = userRepository.findByPhoneNumAndDeletedFalse(phoneNum)
+                    .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+            redisTemplate.delete(SMS_RESET_PREFIX + request.resetToken());
         }
 
-        Users user = userRepository.findByPhoneNumAndDeletedFalse(phoneNum)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
-
         user.updatePassword(passwordEncoder.encode(request.newPassword()));
-
-        redisTemplate.delete(SMS_RESET_PREFIX + request.resetToken());
     }
 }

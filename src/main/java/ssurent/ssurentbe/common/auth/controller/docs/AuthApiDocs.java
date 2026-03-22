@@ -80,12 +80,16 @@ public interface AuthApiDocs {
     })
     ResponseEntity<BaseResponse<SmsVerifyResponse>> verifySmsCode(@RequestBody SmsVerifyRequest request);
 
-    @Operation(summary = "비밀번호 재설정", description = "SMS 인증 후 발급된 resetToken으로 비밀번호를 재설정합니다.")
+    @Operation(summary = "비밀번호 재설정",
+            description = "비밀번호를 재설정합니다. 로그인 상태(JWT)이거나 SMS 인증 후 발급된 resetToken이 있어야 합니다. " +
+                    "로그인 상태라면 resetToken 없이 newPassword만 전달하면 됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "비밀번호 재설정 성공",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class))),
-            @ApiResponse(responseCode = "400", description = "유효하지 않거나 만료된 resetToken",
+            @ApiResponse(responseCode = "400", description = "resetToken 없음 또는 만료 (비로그인 상태)",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
-    ResponseEntity<BaseResponse<Void>> resetPassword(@RequestBody PasswordResetRequest request);
+    ResponseEntity<BaseResponse<Void>> resetPassword(@RequestBody PasswordResetRequest request, Authentication authentication);
 }
