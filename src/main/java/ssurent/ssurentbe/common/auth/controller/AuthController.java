@@ -11,7 +11,11 @@ import ssurent.ssurentbe.common.status.SuccessStatus;
 import ssurent.ssurentbe.common.auth.controller.docs.AuthApiDocs;
 import ssurent.ssurentbe.common.auth.service.AuthService;
 import ssurent.ssurentbe.common.auth.dto.request.LoginRequest;
+import ssurent.ssurentbe.common.auth.dto.request.PasswordResetRequest;
 import ssurent.ssurentbe.common.auth.dto.request.SignupRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SmsSendRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SmsVerifyRequest;
+import ssurent.ssurentbe.common.auth.dto.response.SmsVerifyResponse;
 import ssurent.ssurentbe.common.auth.dto.response.TokenResponse;
 
 @RestController
@@ -57,6 +61,33 @@ public class AuthController implements AuthApiDocs {
         }
         authService.logout(authentication.getName());
         SuccessStatus status = SuccessStatus.LOGOUT_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status));
+    }
+
+    @Override
+    @PostMapping("/sms/send")
+    public ResponseEntity<BaseResponse<Void>> sendSmsCode(@RequestBody SmsSendRequest request) {
+        authService.sendSmsCode(request);
+        SuccessStatus status = SuccessStatus.SMS_SEND_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status));
+    }
+
+    @Override
+    @PostMapping("/sms/verify")
+    public ResponseEntity<BaseResponse<SmsVerifyResponse>> verifySmsCode(@RequestBody SmsVerifyRequest request) {
+        SmsVerifyResponse data = authService.verifySmsCode(request);
+        SuccessStatus status = SuccessStatus.SMS_VERIFY_SUCCESS;
+        return ResponseEntity.status(status.getHttpStatus())
+                .body(BaseResponse.success(status, data));
+    }
+
+    @Override
+    @PatchMapping("/password/reset")
+    public ResponseEntity<BaseResponse<Void>> resetPassword(@RequestBody PasswordResetRequest request) {
+        authService.resetPassword(request);
+        SuccessStatus status = SuccessStatus.PASSWORD_RESET_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
                 .body(BaseResponse.success(status));
     }

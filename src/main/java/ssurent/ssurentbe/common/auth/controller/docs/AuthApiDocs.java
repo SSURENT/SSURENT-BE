@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ssurent.ssurentbe.common.base.BaseResponse;
 import ssurent.ssurentbe.common.auth.dto.request.LoginRequest;
+import ssurent.ssurentbe.common.auth.dto.request.PasswordResetRequest;
 import ssurent.ssurentbe.common.auth.dto.request.SignupRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SmsSendRequest;
+import ssurent.ssurentbe.common.auth.dto.request.SmsVerifyRequest;
+import ssurent.ssurentbe.common.auth.dto.response.SmsVerifyResponse;
 import ssurent.ssurentbe.common.auth.dto.response.TokenResponse;
 import ssurent.ssurentbe.common.auth.dto.response.TokenResponseWrapper;
 
@@ -56,4 +60,32 @@ public interface AuthApiDocs {
                     content = @Content(schema = @Schema(implementation = BaseResponse.class)))
     })
     ResponseEntity<BaseResponse<Void>> logout(Authentication authentication);
+
+    @Operation(summary = "SMS 인증번호 발송", description = "입력한 전화번호로 6자리 인증번호를 발송합니다. 해당 번호로 가입된 계정이 있어야 합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "인증번호 발송 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "404", description = "해당 전화번호로 가입된 사용자 없음",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "500", description = "SMS 발송 실패",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<Void>> sendSmsCode(@RequestBody SmsSendRequest request);
+
+    @Operation(summary = "SMS 인증번호 검증", description = "발송된 인증번호를 검증합니다. 성공 시 비밀번호 재설정용 토큰(10분 유효)을 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "인증번호 검증 성공, resetToken 반환"),
+            @ApiResponse(responseCode = "401", description = "인증번호 불일치 또는 만료",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<SmsVerifyResponse>> verifySmsCode(@RequestBody SmsVerifyRequest request);
+
+    @Operation(summary = "비밀번호 재설정", description = "SMS 인증 후 발급된 resetToken으로 비밀번호를 재설정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "비밀번호 재설정 성공",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "400", description = "유효하지 않거나 만료된 resetToken",
+                    content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+    })
+    ResponseEntity<BaseResponse<Void>> resetPassword(@RequestBody PasswordResetRequest request);
 }
