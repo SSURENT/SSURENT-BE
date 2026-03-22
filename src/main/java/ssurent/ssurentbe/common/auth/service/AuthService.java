@@ -144,22 +144,28 @@ public class AuthService {
 
     @Transactional
     public void sendSmsCode(SmsSendRequest request) {
-        userRepository.findByPhoneNumAndDeletedFalse(request.phoneNum())
+        Users user = userRepository.findByStudentNumAndDeletedFalse(request.studentNum())
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
+        if (!request.phoneNum().replace("-", "").equals(user.getPhoneNum().replace("-", ""))) {
+            throw new GeneralException(ErrorStatus.PHONE_NUM_MISMATCH);
+        }
+
+        String normalizedPhone = request.phoneNum().replace("-", "");
         String code = String.format("%06d", RANDOM.nextInt(1_000_000));
         redisTemplate.opsForValue().set(
-                SMS_CODE_PREFIX + request.phoneNum(),
+                SMS_CODE_PREFIX + normalizedPhone,
                 code,
                 SMS_CODE_TTL_MINUTES,
                 TimeUnit.MINUTES
         );
 
-        smsService.sendVerificationCode(request.phoneNum(), code);
+        smsService.sendVerificationCode(normalizedPhone, code);
     }
 
     public SmsVerifyResponse verifySmsCode(SmsVerifyRequest request) {
-        String storedCode = redisTemplate.opsForValue().get(SMS_CODE_PREFIX + request.phoneNum());
+        String normalizedPhone = request.phoneNum().replace("-", "");
+        String storedCode = redisTemplate.opsForValue().get(SMS_CODE_PREFIX + normalizedPhone);
 
         if (storedCode == null) {
             throw new GeneralException(ErrorStatus.VERIFICATION_CODE_EXPIRED);
@@ -168,12 +174,12 @@ public class AuthService {
             throw new GeneralException(ErrorStatus.INVALID_VERIFICATION_CODE);
         }
 
-        redisTemplate.delete(SMS_CODE_PREFIX + request.phoneNum());
+        redisTemplate.delete(SMS_CODE_PREFIX + normalizedPhone);
 
         String resetToken = UUID.randomUUID().toString();
         redisTemplate.opsForValue().set(
                 SMS_RESET_PREFIX + resetToken,
-                request.phoneNum(),
+                normalizedPhone,
                 SMS_RESET_TTL_MINUTES,
                 TimeUnit.MINUTES
         );
@@ -196,7 +202,7 @@ public class AuthService {
             if (phoneNum == null) {
                 throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
             }
-            user = userRepository.findByPhoneNumAndDeletedFalse(phoneNum)
+            user = userRepository.findByNormalizedPhoneNumAndDeletedFalse(phoneNum)
                     .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
             redisTemplate.delete(SMS_RESET_PREFIX + request.resetToken());
         }
