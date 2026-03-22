@@ -36,6 +36,7 @@ public enum ErrorStatus implements BaseStatus {
     VERIFICATION_CODE_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH_401", "인증 코드가 만료되었습니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "AUTH_401", "비밀번호가 올바르지 않습니다."),
     INVALID_RESET_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_400", "비밀번호 재설정 토큰이 유효하지 않습니다."),
+    PHONE_NUM_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_400", "학번과 전화번호가 일치하지 않습니다."),
     SMS_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AUTH_500", "SMS 발송에 실패했습니다."),
 
     /**
