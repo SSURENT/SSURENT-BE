@@ -29,7 +29,9 @@ public class SmsService {
         try {
             messageService.sendOne(new SingleMessageSendingRequest(message));
         } catch (Exception e) {
-            log.error("[SMS] 발송 실패 - to: {}, cause: {}", phoneNum.replace("-", ""), e.getMessage(), e);
+            String normalized = phoneNum.replace("-", "");
+            String masked = "*".repeat(Math.max(0, normalized.length() - 4)) + normalized.substring(Math.max(0, normalized.length() - 4));
+            log.error("[SMS] 발송 실패 - to: {}, cause: {}", masked, e.getMessage(), e);
             throw new GeneralException(ErrorStatus.SMS_SEND_FAILED);
         }
     }
