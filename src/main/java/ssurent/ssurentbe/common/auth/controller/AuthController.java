@@ -1,6 +1,7 @@
 package ssurent.ssurentbe.common.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +68,7 @@ public class AuthController implements AuthApiDocs {
 
     @Override
     @PostMapping("/sms/send")
-    public ResponseEntity<BaseResponse<Void>> sendSmsCode(@RequestBody SmsSendRequest request) {
+    public ResponseEntity<BaseResponse<Void>> sendSmsCode(@RequestBody @Valid SmsSendRequest request) {
         authService.sendSmsCode(request);
         SuccessStatus status = SuccessStatus.SMS_SEND_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
@@ -76,7 +77,7 @@ public class AuthController implements AuthApiDocs {
 
     @Override
     @PostMapping("/sms/verify")
-    public ResponseEntity<BaseResponse<SmsVerifyResponse>> verifySmsCode(@RequestBody SmsVerifyRequest request) {
+    public ResponseEntity<BaseResponse<SmsVerifyResponse>> verifySmsCode(@RequestBody @Valid SmsVerifyRequest request) {
         SmsVerifyResponse data = authService.verifySmsCode(request);
         SuccessStatus status = SuccessStatus.SMS_VERIFY_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
@@ -86,7 +87,7 @@ public class AuthController implements AuthApiDocs {
     @Override
     @PatchMapping("/password/reset")
     public ResponseEntity<BaseResponse<Void>> resetPassword(
-            @RequestBody PasswordResetRequest request,
+            @RequestBody @Valid PasswordResetRequest request,
             Authentication authentication) {
         String studentNum = authentication != null ? authentication.getName() : null;
         authService.resetPassword(request, studentNum);
