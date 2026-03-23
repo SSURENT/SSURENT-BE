@@ -42,8 +42,10 @@ public class AuthService {
     private static final String REFRESH_TOKEN_PREFIX = "RT:";
     private static final String SMS_CODE_PREFIX = "SMS:CODE:";
     private static final String SMS_RESET_PREFIX = "SMS:RESET:";
+    private static final String SMS_FAIL_PREFIX = "SMS:FAIL:";
     private static final long SMS_CODE_TTL_MINUTES = 5L;
     private static final long SMS_RESET_TTL_MINUTES = 10L;
+    private static final int SMS_MAX_ATTEMPTS = 10;
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Transactional
@@ -170,11 +172,30 @@ public class AuthService {
         if (storedCode == null) {
             throw new GeneralException(ErrorStatus.VERIFICATION_CODE_EXPIRED);
         }
+
+        String failKey = SMS_FAIL_PREFIX + normalizedPhone;
+        String failCountStr = redisTemplate.opsForValue().get(failKey);
+        if (failCountStr != null && Integer.parseInt(failCountStr) >= SMS_MAX_ATTEMPTS) {
+            redisTemplate.delete(SMS_CODE_PREFIX + normalizedPhone);
+            redisTemplate.delete(failKey);
+            throw new GeneralException(ErrorStatus.VERIFICATION_ATTEMPT_EXCEEDED);
+        }
+
         if (!storedCode.equals(request.code())) {
+            Long failCount = redisTemplate.opsForValue().increment(failKey);
+            if (failCount == 1) {
+                redisTemplate.expire(failKey, SMS_CODE_TTL_MINUTES, TimeUnit.MINUTES);
+            }
+            if (failCount >= SMS_MAX_ATTEMPTS) {
+                redisTemplate.delete(SMS_CODE_PREFIX + normalizedPhone);
+                redisTemplate.delete(failKey);
+                throw new GeneralException(ErrorStatus.VERIFICATION_ATTEMPT_EXCEEDED);
+            }
             throw new GeneralException(ErrorStatus.INVALID_VERIFICATION_CODE);
         }
 
         redisTemplate.delete(SMS_CODE_PREFIX + normalizedPhone);
+        redisTemplate.delete(failKey);
 
         Users user = userRepository.findByNormalizedPhoneNumAndDeletedFalse(normalizedPhone)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
