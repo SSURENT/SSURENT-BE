@@ -211,5 +211,6 @@ public class AuthService {
         }
 
         user.updatePassword(passwordEncoder.encode(request.newPassword()));
+        redisTemplate.delete(REFRESH_TOKEN_PREFIX + user.getStudentNum());
     }
 }
