@@ -176,10 +176,13 @@ public class AuthService {
 
         redisTemplate.delete(SMS_CODE_PREFIX + normalizedPhone);
 
+        Users user = userRepository.findByNormalizedPhoneNumAndDeletedFalse(normalizedPhone)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
         String resetToken = UUID.randomUUID().toString();
         redisTemplate.opsForValue().set(
                 SMS_RESET_PREFIX + resetToken,
-                normalizedPhone,
+                user.getStudentNum(),
                 SMS_RESET_TTL_MINUTES,
                 TimeUnit.MINUTES
         );
@@ -198,11 +201,11 @@ public class AuthService {
             if (request.resetToken() == null) {
                 throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
             }
-            String phoneNum = redisTemplate.opsForValue().get(SMS_RESET_PREFIX + request.resetToken());
-            if (phoneNum == null) {
+            String resetStudentNum = redisTemplate.opsForValue().get(SMS_RESET_PREFIX + request.resetToken());
+            if (resetStudentNum == null) {
                 throw new GeneralException(ErrorStatus.INVALID_RESET_TOKEN);
             }
-            user = userRepository.findByNormalizedPhoneNumAndDeletedFalse(phoneNum)
+            user = userRepository.findByStudentNumAndDeletedFalse(resetStudentNum)
                     .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
             redisTemplate.delete(SMS_RESET_PREFIX + request.resetToken());
         }
