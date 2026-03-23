@@ -19,6 +19,9 @@ public enum SuccessStatus implements BaseStatus {
     REISSUE_TOKEN_SUCCESS(HttpStatus.OK, "AUTH_200", "토큰 재발급 성공"),
     WITHDRAW_SUCCESS(HttpStatus.OK, "AUTH_200", "회원탈퇴 성공"),
     SIGNUP_SUCCESS(HttpStatus.CREATED, "AUTH_201", "회원가입 성공"),
+    SMS_SEND_SUCCESS(HttpStatus.OK, "AUTH_200", "인증번호가 발송되었습니다."),
+    SMS_VERIFY_SUCCESS(HttpStatus.OK, "AUTH_200", "인증번호 확인 성공"),
+    PASSWORD_RESET_SUCCESS(HttpStatus.OK, "AUTH_200", "비밀번호가 재설정되었습니다."),
     /**
      * User
      */

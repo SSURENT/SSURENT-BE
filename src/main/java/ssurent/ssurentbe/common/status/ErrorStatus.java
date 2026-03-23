@@ -34,7 +34,11 @@ public enum ErrorStatus implements BaseStatus {
     USER_WITHDRAWN(HttpStatus.FORBIDDEN, "AUTH_403", "탈퇴한 사용자입니다."),
     INVALID_VERIFICATION_CODE(HttpStatus.UNAUTHORIZED, "AUTH_401", "인증 코드가 일치하지 않습니다."),
     VERIFICATION_CODE_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH_401", "인증 코드가 만료되었습니다."),
+    VERIFICATION_ATTEMPT_EXCEEDED(HttpStatus.TOO_MANY_REQUESTS, "AUTH_429", "인증 시도 횟수를 초과했습니다. 인증번호를 다시 요청해주세요."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "AUTH_401", "비밀번호가 올바르지 않습니다."),
+    INVALID_RESET_TOKEN(HttpStatus.BAD_REQUEST, "AUTH_400", "비밀번호 재설정 토큰이 유효하지 않습니다."),
+    PHONE_NUM_MISMATCH(HttpStatus.BAD_REQUEST, "AUTH_400", "학번과 전화번호가 일치하지 않습니다."),
+    SMS_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "AUTH_500", "SMS 발송에 실패했습니다."),
 
     /**
      * JWT

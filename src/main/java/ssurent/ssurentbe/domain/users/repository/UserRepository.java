@@ -1,6 +1,8 @@
 package ssurent.ssurentbe.domain.users.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ssurent.ssurentbe.domain.users.entity.Users;
 import ssurent.ssurentbe.domain.users.enums.Role;
@@ -18,4 +20,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     List<Users> findByStatusAndDeletedFalse(Status status);
     List<Users> findByRoleInAndDeletedFalse(List<Role> roles);
     Optional<Users> findByIdAndDeletedFalse(Long userId);
+    Optional<Users> findByPhoneNumAndDeletedFalse(String phoneNum);
+    @Query("SELECT u FROM Users u WHERE REPLACE(u.phoneNum, '-', '') = :phoneNum AND u.deleted = false")
+    Optional<Users> findByNormalizedPhoneNumAndDeletedFalse(@Param("phoneNum") String phoneNum);
 }
