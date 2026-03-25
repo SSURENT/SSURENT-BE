@@ -53,7 +53,7 @@ public enum ErrorStatus implements BaseStatus {
     JWT_EXTRACT_ROLE_FAILED(HttpStatus.UNAUTHORIZED, "JWT_401", "토큰에서 사용자 Role을 추출할 수 없습니다."),
 
     ITEM_NOT_AVAILABLE(HttpStatus.CONFLICT, "ITEM_409", "이미 대여 중인 물품입니다."),
-
+    CATEGORY_HAS_RENTED_ITEMS(HttpStatus.BAD_REQUEST, "CATEGORY_400", "삭제하려는 카테고리에 현재 대여중인 아이템이 있습니다"),
     /**
      * Users
      */
