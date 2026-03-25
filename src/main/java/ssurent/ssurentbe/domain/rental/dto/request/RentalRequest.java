@@ -27,6 +27,7 @@ public record RentalRequest(
         return RentalHistory.builder()
                 .assistId(assist)
                 .userId(user)
+                .userInfo(user.getName() + "(" + user.getStudentNum() + ")")
                 .itemId(item)
                 .rentalDate(now)
                 .dueDate(now.plusDays(DEFAULT_RENTAL_DAYS))
