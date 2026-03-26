@@ -16,17 +16,17 @@ public class ItemStatusLog extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "item_name")
+    @Column(name = "item_name", nullable = false)
     private String itemName;        // "우산(101)"
 
-    @Column(name = "changed_by_info", length = 28)
+    @Column(name = "changed_by_info", length = 28, nullable = false)
     private String changedByInfo;   // "홍길동(20201234)"
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "previous_status")
+    @Column(name = "previous_status", nullable = false)
     private Status prevStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "new_status")
+    @Column(name = "new_status", nullable = false)
     private Status newStatus;
 }

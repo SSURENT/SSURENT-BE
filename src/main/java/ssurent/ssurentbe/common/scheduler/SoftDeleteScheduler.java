@@ -21,7 +21,7 @@ public class SoftDeleteScheduler {
     private final UserRepository userRepository;
     private final AssistsRepository assistsRepository;
 
-    @Scheduled(cron = "0 30 0 * * *")
+    @Scheduled(cron = "0 30 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void cleanupSoftDeletedEntities() {
         LocalDateTime threshold = LocalDateTime.now().minusMonths(1);

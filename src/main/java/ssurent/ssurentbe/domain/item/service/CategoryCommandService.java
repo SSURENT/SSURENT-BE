@@ -47,7 +47,7 @@ public class CategoryCommandService {
 
         // 대여 중인 아이템이 하나라도 있으면 삭제 불가
         boolean hasRentedItem = items.stream()
-                .anyMatch(item -> item.getCondition().equals(Condition.RENT));
+                .anyMatch(item -> item.getCondition().equals(Condition.RENT) || item.getCondition().equals(Condition.OVERDUE));
         if (hasRentedItem) {
             throw new GeneralException(ErrorStatus.CATEGORY_HAS_RENTED_ITEMS);
         }

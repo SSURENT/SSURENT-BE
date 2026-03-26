@@ -28,7 +28,7 @@ public class AuthController implements AuthApiDocs {
 
     @Override
     @PostMapping("/signup")
-    public ResponseEntity<BaseResponse<TokenResponse>> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<BaseResponse<TokenResponse>> signup(@RequestBody @Valid SignupRequest request) {
         TokenResponse data = authService.signup(request);
         SuccessStatus status = SuccessStatus.SIGNUP_SUCCESS;
         return ResponseEntity.status(status.getHttpStatus())
