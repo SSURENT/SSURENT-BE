@@ -22,20 +22,39 @@ public class RentalHistory extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assist_id")
+    @JoinColumn(name = "assist_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_rental_history_assist",
+                    foreignKeyDefinition = "FOREIGN KEY (assist_id) REFERENCES assists(id) ON DELETE SET NULL"
+            ))
     private Assists assistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "return_assist_id")
+    @JoinColumn(name = "return_assist_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_rental_history_return_assist",
+                    foreignKeyDefinition = "FOREIGN KEY (return_assist_id) REFERENCES assists(id) ON DELETE SET NULL"
+            ))
     private Assists returnAssistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_rental_history_user",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL"
+            ))
     private Users userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "item_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_rental_history_item",
+                    foreignKeyDefinition = "FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE SET NULL"
+            ))
     private Items itemId;
+
+    @Column(name = "user_info", length = 28)
+    private String userInfo;
 
     @Column(name = "rental_date")
     private LocalDateTime rentalDate;

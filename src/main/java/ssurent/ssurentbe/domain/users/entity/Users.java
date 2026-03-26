@@ -2,6 +2,7 @@ package ssurent.ssurentbe.domain.users.entity;
 
 import lombok.*;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 import ssurent.ssurentbe.common.base.BaseEntity;
 import ssurent.ssurentbe.domain.users.enums.Role;
 import ssurent.ssurentbe.domain.users.enums.Status;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Builder
+@SQLRestriction("is_deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "Users")
