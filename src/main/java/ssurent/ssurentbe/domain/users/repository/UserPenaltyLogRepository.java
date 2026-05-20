@@ -9,4 +9,6 @@ import java.util.List;
 public interface UserPenaltyLogRepository extends JpaRepository<UserPenaltyLog, Long> {
 
     List<UserPenaltyLog> findByUserIdOrderByCreatedAtDesc(Users user);
+
+    long countByUserId(Users user);
 }

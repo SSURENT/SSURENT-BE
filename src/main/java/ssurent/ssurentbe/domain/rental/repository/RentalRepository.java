@@ -15,6 +15,15 @@ public interface RentalRepository extends JpaRepository<RentalHistory, Long> {
     boolean existsByItemId_IdAndStatus(Long itemId, Status status);
 
     @Query("SELECT rh FROM RentalHistory rh " +
+            "JOIN FETCH rh.itemId " +
+            "JOIN FETCH rh.userId " +
+            "WHERE rh.status = ssurent.ssurentbe.domain.rental.enums.Status.RENT " +
+            "AND rh.overdue = false " +
+            "AND rh.dueDate IS NOT NULL " +
+            "AND rh.dueDate < :now")
+    List<RentalHistory> findOverdueCandidates(@Param("now") LocalDateTime now);
+
+    @Query("SELECT rh FROM RentalHistory rh " +
             "JOIN FETCH rh.itemId i " +
             "WHERE rh.userId.id = :userId " +
             "AND rh.status = :status " +
