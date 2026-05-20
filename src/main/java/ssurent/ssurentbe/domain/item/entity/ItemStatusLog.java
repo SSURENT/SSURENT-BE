@@ -3,7 +3,7 @@ package ssurent.ssurentbe.domain.item.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import ssurent.ssurentbe.common.base.BaseEntity;
-import ssurent.ssurentbe.domain.item.enums.Status;
+import ssurent.ssurentbe.domain.item.enums.Condition;
 
 @Entity
 @Getter
@@ -24,9 +24,9 @@ public class ItemStatusLog extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "previous_status", nullable = false)
-    private Status prevStatus;
+    private Condition prevStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "new_status", nullable = false)
-    private Status newStatus;
+    private Condition newStatus;
 }
