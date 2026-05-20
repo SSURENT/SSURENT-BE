@@ -79,6 +79,11 @@ public class RentalHistory extends BaseEntity {
         this.postponed = true;
     }
 
+    public void markOverdue() {
+        this.overdue = true;
+        this.postponed = true;
+    }
+
     public void returnRental() {
         this.returnDate = LocalDateTime.now();
         this.status = ssurent.ssurentbe.domain.rental.enums.Status.RETURN;
