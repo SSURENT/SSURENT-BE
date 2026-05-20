@@ -18,6 +18,7 @@ import ssurent.ssurentbe.domain.users.enums.Status;
 import ssurent.ssurentbe.domain.users.repository.UserPenaltyLogRepository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class OverdueScheduler {
 
     private static final String CHANGED_BY_SYSTEM = "SYSTEM";
     private static final long BAN_THRESHOLD = 3L;
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
 
     private final RentalRepository rentalRepository;
     private final ItemStatusLogRepository itemStatusLogRepository;
@@ -35,7 +37,7 @@ public class OverdueScheduler {
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void processOverdue() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(KST);
         List<RentalHistory> candidates = rentalRepository.findOverdueCandidates(now);
 
         int bannedCount = 0;
